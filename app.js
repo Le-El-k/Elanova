@@ -1,73 +1,70 @@
-// Données entièrement fictives : cette maquette n'envoie et n'enregistre aucun vote.
+// M.LAB utilise les contenus fournis par le porteur. Les idées des autres projets sont fictives pour la maquette.
 const projects = [
   {
-    id: "terre-vivante", name: "Aïcha Mballa", initials: "AM", title: "Terre Vivante", category: "Agriculture", votes: 4310,
-    short: "Des jardins nourriciers qui rapprochent les villes de ceux qui les nourrissent.",
-    location: "Douala, Cameroun", avatar: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=82",
-    long: "Terre Vivante accompagne de jeunes agriculteurs dans la création de parcelles maraîchères au cœur des quartiers. Le projet met en relation les producteurs et les familles pour faire pousser une alimentation fraîche, locale et accessible.",
-    problem: "Les quartiers urbains dépendent de circuits alimentaires longs, tandis que de jeunes agriculteurs peinent à accéder à des terres et à des débouchés stables.",
-    solution: "Des micro-fermes de proximité, un accompagnement aux pratiques agroécologiques et des partenariats directs avec les habitants et les commerces.",
-    goals: "Créer trois jardins pilotes, former 25 jeunes aux pratiques durables et approvisionner les premiers marchés de quartier.",
-    future: "Un réseau de fermes urbaines réplicable dans d'autres villes, avec une offre de paniers et d'ateliers pour les écoles."
+    id: "mlab-best-soap", name: "Promoteur de M.LAB", initials: "ML", title: "M.LAB / BEST SOAP SERVICES", category: "Commerce et services",
+    short: "Importer des produits utiles à prix accessibles et fabriquer localement des produits d'entretien ménager.",
+    location: "Cameroun", avatar: "assets/mlab-promoteur-portrait.png", image: "assets/mlab-promoteur-portrait.png",
+    imagePosition: "50% 22%", avatarPosition: "50% 22%",
+    gallery: "assets/mlab-promoteur-motivation.png",
+    long: "Jeune entrepreneur passionné par l'innovation, le commerce international et la transformation locale, le promoteur de M.LAB / BEST SOAP SERVICES associe l'importation de produits et d'équipements depuis la Chine à la fabrication et à la commercialisation de produits d'entretien ménager au Cameroun.",
+    problem: "Le projet veut répondre au coût élevé de certains produits courants, à l'accès difficile aux marchandises et équipements abordables, au manque d'emplois et de formation pratique des jeunes à la fabrication de produits ménagers et à l'entrepreneuriat, ainsi qu'à la dépendance aux importations lorsqu'une production locale est possible.",
+    solution: "Importer des produits et équipements utiles depuis la Chine tout en développant une production locale de savons liquides, détergents en poudre, eau de Javel, savons de ménage et vinaigre alimentaire. Ces solutions s'adressent aux ménages, commerces, établissements scolaires, restaurants et petites entreprises.",
+    goals: "Créer des emplois directs et indirects, former des jeunes aux techniques de fabrication de produits ménagers, accompagner les petits commerçants et proposer des produits de qualité à des prix compétitifs.",
+    future: "Construire une entreprise innovante, durable et compétitive, qui répond aux besoins quotidiens, réduit le chômage des jeunes, valorise la production locale et contribue au développement de l'entrepreneuriat camerounais.",
+    motto: "Importer intelligemment, produire localement et entreprendre pour transformer le Cameroun."
   },
   {
-    id: "classe-ouverte", name: "Samuel Nguema", initials: "SN", title: "Classe Ouverte", category: "Éducation", votes: 3290,
-    short: "Une bibliothèque mobile pour faire voyager les histoires jusque dans les villages.",
-    location: "Bafoussam, Cameroun", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=82",
-    long: "Classe Ouverte transforme un véhicule en bibliothèque itinérante, pensée avec les enseignants et les familles. Chaque étape propose des livres, des lectures à voix haute et des ateliers créatifs adaptés aux enfants.",
-    problem: "Dans de nombreuses localités, les écoles et les familles ont peu accès aux livres jeunesse et aux activités de lecture en dehors de la classe.",
-    solution: "Une bibliothèque mobile en langues locales et en français, avec un calendrier de visites co-organisé avec les écoles.",
-    goals: "Mettre en circulation 1 500 livres, visiter 12 écoles et former des relais de lecture dans les communautés partenaires.",
-    future: "Équiper un deuxième véhicule et créer un petit programme d'édition de contes écrits par les enfants."
+    id: "agromboa-direct", name: "Ziani Youssouf", initials: "ZY", title: "AgroMboa Direct", category: "Agriculture",
+    short: "Un circuit de collecte et de vente directe qui rapproche les petits producteurs des marchés locaux.",
+    location: "Cameroun", avatar: "assets/ziani-youssouf.png", image: "assets/ziani-youssouf.png", imagePosition: "50% 38%", avatarPosition: "50% 38%",
+    long: "AgroMboa Direct imagine un réseau de collecte de produits agricoles auprès des petits producteurs, avec une mise en relation simple avec les commerces, restaurants et familles. Le projet veut mieux valoriser les récoltes locales et faciliter leur accès aux marchés.",
+    problem: "Les producteurs ont parfois du mal à trouver des débouchés réguliers et à acheminer leurs récoltes. Les acheteurs, eux, ne savent pas toujours où trouver des produits locaux en quantité et au bon moment.",
+    solution: "Organiser des points de collecte de proximité, regrouper les commandes et partager les disponibilités des producteurs avec les acheteurs locaux.",
+    goals: "Lancer trois points de collecte pilotes, accompagner 40 producteurs et tester un premier service de commandes groupées.",
+    future: "Étendre le réseau à de nouvelles filières et développer des solutions de conservation adaptées aux récoltes locales."
   },
   {
-    id: "sante-poche", name: "Mireille Ebanda", initials: "ME", title: "Santé de Poche", category: "Santé", votes: 2860,
-    short: "Des rendez-vous de prévention au plus près des communautés rurales.",
-    location: "Kribi, Cameroun", avatar: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=82",
-    long: "Santé de Poche déploie des journées de prévention avec des professionnels de santé et des associations locales. L'équipe propose des bilans de première intention, des échanges pratiques et une orientation vers les structures adaptées.",
-    problem: "Les longues distances et le manque d'information rendent les gestes de prévention difficiles d'accès pour plusieurs communautés.",
-    solution: "Des rendez-vous mobiles réguliers, préparés avec les relais locaux et accompagnés d'informations simples et fiables.",
-    goals: "Organiser 20 journées de prévention et faciliter l'orientation des personnes vers les services de santé partenaires.",
-    future: "Développer une tournée itinérante et des supports de prévention adaptés aux réalités de chaque communauté."
+    id: "savoirs-en-mouvement", name: "Ngo Kigno Judicaël Diane", initials: "ND", title: "Les Savoirs en Mouvement", category: "Éducation",
+    short: "Des ateliers mobiles de lecture et de découverte numérique pour les jeunes.",
+    location: "Cameroun", avatar: "assets/ngo-kigno-judicael-diane.png", image: "assets/ngo-kigno-judicael-diane.png", imagePosition: "50% 34%", avatarPosition: "50% 34%",
+    long: "Les Savoirs en Mouvement propose des ateliers itinérants où les jeunes peuvent lire, découvrir des outils numériques et réaliser des activités créatives. Le programme est conçu pour être accueilli dans des écoles et des espaces associatifs.",
+    problem: "Certains jeunes ont peu d'occasions d'accéder à des livres, à des outils numériques et à des activités pratiques en complément des cours.",
+    solution: "Mettre à disposition des malles de livres et de matériel numérique, puis organiser des ateliers animés avec les relais éducatifs locaux.",
+    goals: "Créer deux kits mobiles, organiser 24 ateliers et accueillir au moins 200 jeunes lors d'une première phase pilote.",
+    future: "Former des animateurs locaux et élargir le programme à davantage d'établissements et d'associations."
   },
   {
-    id: "rebois", name: "David Tchana", initials: "DT", title: "Rebois", category: "Environnement", votes: 2290,
-    short: "Du bois récupéré, du mobilier réinventé et des emplois créés localement.",
-    location: "Yaoundé, Cameroun", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=82",
-    long: "Rebois collecte des chutes de bois et des meubles délaissés pour leur donner une nouvelle vie dans un atelier de quartier. Le projet forme de jeunes artisans à la fabrication, à la réparation et au réemploi.",
-    problem: "Les matériaux réutilisables sont jetés alors que les ateliers manquent de ressources et que des jeunes cherchent à se former à un métier.",
-    solution: "Un atelier partagé équipé pour le tri, la transformation du bois et l'apprentissage de techniques artisanales.",
-    goals: "Réemployer 5 tonnes de bois la première année et accompagner 15 jeunes dans un parcours de formation.",
-    future: "Ouvrir un espace de vente et créer des partenariats avec les chantiers et les menuisiers de la région."
+    id: "restart-mobile", name: "Marius Tchoumi", initials: "MT", title: "ReStart Mobile", category: "Technologie et innovation",
+    short: "Réparer et reconditionner des téléphones tout en formant de jeunes techniciens.",
+    location: "Cameroun", avatar: "assets/marius-tchoumi.png", image: "assets/marius-tchoumi.png", imagePosition: "50% 32%", avatarPosition: "50% 32%",
+    long: "ReStart Mobile veut ouvrir un atelier de réparation et de reconditionnement de téléphones. Le projet associe un service de proximité à une formation pratique pour transmettre les bases du diagnostic, de la réparation et du réemploi électronique.",
+    problem: "Les pannes de téléphone coûtent cher, les appareils inutilisés s'accumulent et les jeunes disposent de peu d'espaces pour apprendre la réparation sur du matériel réel.",
+    solution: "Un atelier qui propose diagnostic et réparation, récupère les appareils réparables et organise des parcours pratiques avec des techniciens expérimentés.",
+    goals: "Équiper un atelier pilote, former 12 jeunes et remettre en circulation les premiers appareils reconditionnés avec un suivi après-vente.",
+    future: "Créer un service local de collecte et de réparation, puis proposer des ateliers dans d'autres quartiers."
   },
   {
-    id: "kmer-tech", name: "Cédric Fotso", initials: "CF", title: "Kmer Tech", category: "Technologie et innovation", votes: 1840,
-    short: "Des outils numériques simples pour aider les petites entreprises à grandir.",
-    location: "Douala, Cameroun", avatar: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=82",
-    long: "Kmer Tech conçoit des outils numériques légers pour aider les très petites entreprises à suivre leurs commandes, présenter leur activité et mieux s'organiser au quotidien.",
-    problem: "Les petites structures ont rarement accès à des outils numériques abordables qui correspondent à leurs habitudes et à leurs moyens.",
-    solution: "Une suite d'outils en français simple, utilisable sur téléphone et conçue avec les commerçants locaux.",
-    goals: "Tester les premiers outils auprès de 50 petites entreprises et proposer des ateliers de prise en main gratuits.",
-    future: "Ajouter de nouveaux outils de gestion et ouvrir le service à d'autres villes et secteurs d'activité."
+    id: "agripulse-local", name: "Ketcha Frank Prosper", initials: "KF", title: "AgriPulse Local", category: "Agriculture",
+    short: "Des jardins maraîchers productifs grâce à une irrigation économe et à des pratiques agroécologiques.",
+    location: "Cameroun", avatar: "assets/ketcha-frank-prosper.png", image: "assets/ketcha-frank-prosper.png", imagePosition: "50% 45%", avatarPosition: "50% 32%",
+    long: "AgriPulse Local accompagne de petits jardins maraîchers avec des systèmes d'irrigation économes, des conseils pratiques et une meilleure planification des cultures. L'objectif est de produire toute l'année en utilisant l'eau avec soin.",
+    problem: "Les petites exploitations subissent les périodes sèches, les pertes de récoltes et le manque d'équipements simples pour mieux gérer l'eau.",
+    solution: "Installer des dispositifs d'irrigation adaptés à petite échelle, former les producteurs à leur entretien et partager des méthodes de culture agroécologiques.",
+    goals: "Créer deux parcelles pilotes, accompagner 20 producteurs et suivre la consommation d'eau et les récoltes sur une première saison.",
+    future: "Faire connaître ces pratiques dans de nouveaux groupements de producteurs et tester des équipements fabriqués ou assemblés localement."
   },
   {
-    id: "saveurs-mama", name: "Priscille Mvondo", initials: "PM", title: "Les Saveurs de Mama", category: "Entrepreneuriat", votes: 1510,
-    short: "Les recettes du terroir racontées, partagées et mises à l'honneur.",
-    location: "Bertoua, Cameroun", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1000&q=82",
-    long: "Les Saveurs de Mama valorise les produits et les recettes familiales à travers des ateliers culinaires et une gamme de condiments préparés en petites séries avec des productrices locales.",
-    problem: "Les savoir-faire culinaires se transmettent de moins en moins et les productrices peinent à trouver de nouveaux débouchés.",
-    solution: "Des ateliers ouverts, des recettes documentées et une petite gamme artisanale produite en partenariat avec les femmes du territoire.",
-    goals: "Accompagner 10 productrices, lancer trois ateliers et tester la vente de produits sur les marchés locaux.",
-    future: "Faire grandir la gamme, accueillir des visiteurs et partager les recettes avec de nouvelles générations."
+    id: "naya-racines", name: "Kenfack Natacha Sandrine", initials: "KN", title: "Naya Racines", category: "Entrepreneuriat",
+    short: "Une gamme de soins artisanaux qui valorise les huiles et ingrédients végétaux locaux.",
+    location: "Cameroun", avatar: "assets/kenfack-natacha-sandrine.png", image: "assets/kenfack-natacha-sandrine.png", imagePosition: "50% 34%", avatarPosition: "50% 34%",
+    long: "Naya Racines développe une petite gamme de soins pour la peau et les cheveux à base d'ingrédients végétaux disponibles localement. La démarche associe formulation soignée, production en petits lots et présentation claire de la composition des produits.",
+    problem: "Les consommateurs cherchent des soins abordables et transparents, tandis que les petites productrices ont besoin d'accompagnement pour structurer leur fabrication et leur commercialisation.",
+    solution: "Prototyper des savons et baumes simples, documenter les recettes et les bonnes pratiques d'hygiène, puis tester les produits auprès de premiers clients.",
+    goals: "Développer trois produits pilotes, former une petite équipe aux pratiques de fabrication et tester une première vente locale.",
+    future: "Faire évoluer la gamme, nouer des partenariats d'approvisionnement responsable et créer des opportunités pour d'autres jeunes entrepreneuses."
   },
   {
-    id: "atelier-ndolo", name: "Estelle Ndom", initials: "EN", title: "Atelier Ndolo", category: "Commerce et services", votes: 1220,
+    id: "atelier-ndolo", name: "Estelle Ndom", initials: "EN", title: "Atelier Ndolo", category: "Commerce et services",
     short: "Un atelier de couture circulaire pour réparer, transformer et transmettre.",
     location: "Limbe, Cameroun", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=82",
     image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=82",
@@ -78,7 +75,7 @@ const projects = [
     future: "Créer une collection capsule issue du réemploi et développer des ateliers itinérants."
   },
   {
-    id: "solaire-ensemble", name: "Armand Fongang", initials: "AF", title: "Solaire Ensemble", category: "Environnement", votes: 930,
+    id: "solaire-ensemble", name: "Armand Fongang", initials: "AF", title: "Solaire Ensemble", category: "Environnement",
     short: "Des solutions solaires de proximité pensées avec les habitants.",
     location: "Ngaoundéré, Cameroun", avatar: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=240&h=240&q=82",
     image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1000&q=82",
@@ -91,34 +88,18 @@ const projects = [
 ];
 
 const categories = ["Toutes les catégories", "Technologie et innovation", "Agriculture", "Éducation", "Santé", "Environnement", "Entrepreneuriat", "Commerce et services"];
-const state = { selectedCategory: categories[0], search: "", sort: "popular", visibleCount: 6, voted: new Set(), toastTimer: null };
+const state = { selectedCategory: categories[0], search: "", sort: "az", visibleCount: 6 };
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 const formatNumber = (number) => new Intl.NumberFormat("fr-FR").format(number);
-const totalVotes = () => projects.reduce((sum, project) => sum + project.votes, 0);
 const projectById = (id) => projects.find((project) => project.id === id);
+const projectPageUrl = (project) => `projet.html?projet=${encodeURIComponent(project.id)}`;
 
 function iconForCategory(category) {
   const icons = {
     "Toutes les catégories": "✳", "Technologie et innovation": "⌘", Agriculture: "⌁", Éducation: "▤", Santé: "✚", Environnement: "♧", Entrepreneuriat: "↗", "Commerce et services": "◇"
   };
   return icons[category] || "✳";
-}
-
-function renderFeatured() {
-  const container = $("#featured-grid");
-  container.innerHTML = projects.slice(0, 3).map((project) => `
-    <article class="featured-card">
-      <a class="featured-image" href="#votes" data-details="${project.id}" aria-label="Découvrir le projet ${project.title}">
-        <img src="${project.image}" alt="Illustration du projet ${project.title}" loading="lazy">
-        <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
-      </a>
-      <div class="featured-body">
-        <div class="candidate-line"><img src="${project.avatar}" alt="" loading="lazy"><span>Porté par <strong>${project.name}</strong></span></div>
-        <h3>${project.title}</h3><p>${project.short}</p>
-        <div class="featured-bottom"><span class="vote-metric"><span aria-hidden="true">♡</span>${formatNumber(project.votes)} votes</span><a class="card-link" href="#votes" data-details="${project.id}">Voir le projet <span aria-hidden="true">↗</span></a></div>
-      </div>
-    </article>`).join("");
 }
 
 function renderCategories() {
@@ -133,25 +114,23 @@ function filteredProjects() {
     const matchesQuery = !query || `${project.name} ${project.title} ${project.category} ${project.short}`.toLocaleLowerCase("fr").includes(query);
     return matchesCategory && matchesQuery;
   });
-  if (state.sort === "popular") results.sort((a, b) => b.votes - a.votes);
-  if (state.sort === "votes-asc") results.sort((a, b) => a.votes - b.votes);
-  if (state.sort === "recent") results.sort((a, b) => a.title.localeCompare(b.title, "fr"));
+  if (state.sort === "az") results.sort((a, b) => a.title.localeCompare(b.title, "fr"));
+  if (state.sort === "za") results.sort((a, b) => b.title.localeCompare(a.title, "fr"));
+  if (state.sort === "category") results.sort((a, b) => a.category.localeCompare(b.category, "fr") || a.title.localeCompare(b.title, "fr"));
   return results;
 }
 
 function projectCard(project) {
-  const hasVoted = state.voted.has(project.id);
   return `
     <article class="project-card">
-      <a class="project-image" href="#votes" data-details="${project.id}" aria-label="Découvrir le projet ${project.title}">
-        <img src="${project.image}" alt="Aperçu du projet ${project.title}" loading="lazy">
+      <a class="project-image" href="${projectPageUrl(project)}" aria-label="Découvrir le projet ${project.title}">
+        <img src="${project.image}" alt="Aperçu du projet ${project.title}" style="object-position:${project.imagePosition || "center"}" loading="lazy">
         <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
       </a>
       <div class="project-card-body">
-        <div class="candidate-line"><img src="${project.avatar}" alt="" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
+        <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
-        <div class="project-card-footer"><span class="vote-metric"><span aria-hidden="true">♡</span>${formatNumber(project.votes)} votes</span><span class="vote-metric">Projet sélectionné ✳</span></div>
-        <div class="project-card-actions"><button type="button" data-details="${project.id}">Découvrir le projet <span aria-hidden="true">↗</span></button><button class="vote-button" type="button" data-vote="${project.id}" ${hasVoted ? "disabled" : ""}>${hasVoted ? "✓ Vote enregistré" : "♡ Voter pour ce projet"}</button></div>
+        <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
 }
@@ -163,99 +142,111 @@ function renderProjects() {
   $("#results-label").textContent = `${results.length} projet${results.length > 1 ? "s" : ""} ${state.selectedCategory !== categories[0] ? `dans « ${state.selectedCategory} »` : "à découvrir"}`;
   $("#load-more").parentElement.hidden = results.length <= state.visibleCount;
   $("#project-count").textContent = String(projects.length).padStart(2, "0");
-  $("#vote-count").textContent = formatNumber(totalVotes());
 }
 
-function renderRanking() {
-  const ranked = [...projects].sort((a, b) => b.votes - a.votes);
-  $("#ranking-podium").innerHTML = ranked.slice(0, 3).map((project, index) => `
-    <article class="podium-card${index === 0 ? " is-first" : ""}">
-      ${index === 0 ? '<span class="podium-crown" aria-hidden="true">✳</span>' : ""}
-      <div class="podium-number"><span>0${index + 1} / EN TÊTE</span><strong>${index === 0 ? "#01" : `#0${index + 1}`}</strong></div>
-      <div class="podium-person"><img src="${project.avatar}" alt="" loading="lazy"><span><strong>${project.name}</strong><small>${project.category}</small></span></div>
-      <h3>${project.title}</h3><p>${project.short}</p>
-      <div class="podium-votes">${formatNumber(project.votes)} <span>votes de la communauté</span></div>
-    </article>`).join("");
-  $("#ranking-rest").innerHTML = ranked.slice(3).map((project, index) => `
-    <div class="ranking-row"><span class="ranking-rank">0${index + 4}</span><span class="ranking-name"><img src="${project.avatar}" alt="" loading="lazy">${project.name}</span><span class="ranking-project">${project.title}</span><span class="ranking-row-votes">${formatNumber(project.votes)} votes</span></div>`).join("");
-}
+function renderProjectDetailPage() {
+  const container = $("#project-detail-content");
+  if (!container) return;
 
-function openProject(id) {
-  const project = projectById(id);
-  if (!project) return;
-  const hasVoted = state.voted.has(id);
-  $("#dialog-content").innerHTML = `
-    <button class="dialog-close" type="button" aria-label="Fermer la fiche projet">×</button>
-    <div class="dialog-hero"><img src="${project.image}" alt="Illustration du projet ${project.title}"><div class="dialog-person"><img src="${project.avatar}" alt=""><span><strong>${project.name}</strong><small>${project.location}</small></span></div></div>
-    <div class="dialog-body"><span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span><h2 id="dialog-title">${project.title}</h2><p class="dialog-lede">${project.long}</p>
-      <div class="dialog-details"><section class="dialog-detail"><h3>Le problème</h3><p>${project.problem}</p></section><section class="dialog-detail"><h3>La solution</h3><p>${project.solution}</p></section><section class="dialog-detail"><h3>Les objectifs</h3><p>${project.goals}</p></section><section class="dialog-detail"><h3>Et après&nbsp;?</h3><p>${project.future}</p></section></div>
-      <div class="dialog-actions"><span>♡ ${formatNumber(project.votes)} votes fictifs · ${project.category}</span><button class="button button-coral vote-button" type="button" data-vote="${project.id}" ${hasVoted ? "disabled" : ""}>${hasVoted ? "✓ Vote enregistré" : "Soutenir ce projet · Voter"}</button></div>
+  const slug = new URLSearchParams(window.location.search).get("projet");
+  const project = projectById(slug);
+  if (!project) {
+    document.title = "Projet introuvable — ÉLANOVA";
+    container.innerHTML = `<section class="project-not-found"><span class="section-kicker">FICHE INTROUVABLE</span><h1>Ce projet n'existe pas.</h1><p>Retournez à la liste pour découvrir les projets participants.</p><a class="button button-dark" href="projets.html#votes">Voir les projets <span aria-hidden="true">↗</span></a></section>`;
+    return;
+  }
+
+  document.title = `${project.title} — ÉLANOVA`;
+  const projectStatusNotice = project.id === "mlab-best-soap" ? "" : `<div class="detail-demo-notice">Projet et description fictifs, créés pour cette maquette de présentation.</div>`;
+  container.innerHTML = `
+    <div class="project-detail-wrap">
+      <a class="project-back" href="projets.html#votes"><span aria-hidden="true">←</span> Retour aux projets</a>
+      <section class="project-detail-hero" aria-labelledby="project-page-title">
+        <div class="project-detail-copy">
+          <div class="section-kicker">PORTRAIT D'UN PROJET · ${project.location.toUpperCase()}</div>
+          <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
+          <h1 id="project-page-title">${project.title}</h1>
+          <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
+          <p class="project-detail-summary">${project.short}</p>
+          <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
+        </div>
+        <figure class="project-detail-photo"><img src="${project.image}" alt="Portrait de ${project.name}, porteur du projet ${project.title}" style="object-position:${project.imagePosition || "center"}"><figcaption><span>${project.name}</span><span>${project.location}</span></figcaption></figure>
+      </section>
+
+      <div class="project-detail-layout">
+        <div class="project-detail-main">
+          ${projectStatusNotice}
+          <section class="detail-section"><div class="section-kicker">L'INITIATIVE</div><h2>Une idée, une ambition.</h2><p>${project.long}</p></section>
+          ${project.gallery ? `<figure class="project-detail-gallery"><img src="${project.gallery}" alt="Photo de motivation du promoteur de M.LAB"><figcaption><span>La devise du promoteur</span><blockquote>« ${project.motto} »</blockquote></figcaption></figure>` : ""}
+          <section class="detail-section"><div class="detail-section-label"><span>01</span><h2>Le problème</h2></div><p>${project.problem}</p></section>
+          <section class="detail-section"><div class="detail-section-label"><span>02</span><h2>La solution proposée</h2></div><p>${project.solution}</p></section>
+          <section class="detail-section"><div class="detail-section-label"><span>03</span><h2>Les objectifs</h2></div><p>${project.goals}</p></section>
+          <section class="detail-section"><div class="detail-section-label"><span>04</span><h2>La vision</h2></div><p>${project.future}</p></section>
+        </div>
+        <aside class="project-detail-sidebar" aria-label="Soutenir le projet">
+          <div class="payment-card" id="soutenir"><span class="payment-icon" aria-hidden="true">＋</span><div class="section-kicker">CONTRIBUTION AU VOTE</div><h2>Soutenir ce projet</h2><p>Choisissez le montant de votre contribution. Le minimum est de 100 FCFA, sans plafond.</p><div class="payment-method-inline"><strong>SoleasPay</strong><span>Mode de paiement</span></div><button class="payment-button" type="button" data-vote-open="${project.id}">Déposer pour voter <span aria-hidden="true">↗</span></button><small class="payment-disabled-note">Paiement en attente de connexion de l'API.</small></div>
+          <a class="sidebar-back-link" href="projets.html#votes">← Découvrir les autres projets</a>
+        </aside>
+      </div>
     </div>`;
-  const dialog = $("#project-dialog");
-  if (!dialog.open) dialog.showModal();
-  document.body.classList.add("dialog-open");
-  $(".dialog-close", dialog).focus();
 }
 
-function closeProject() {
-  const dialog = $("#project-dialog");
-  if (dialog.open) dialog.close();
-  document.body.classList.remove("dialog-open");
-}
-
-function showToast(message) {
-  const toast = $("#toast");
-  toast.textContent = message;
-  toast.classList.add("visible");
-  window.clearTimeout(state.toastTimer);
-  state.toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 3600);
-}
-
-function castDemoVote(id) {
+function openVoteModal(id) {
   const project = projectById(id);
-  if (!project || state.voted.has(id)) return;
-  state.voted.add(id);
-  project.votes += 1;
-  renderProjects();
-  renderRanking();
-  renderFeatured();
-  if ($("#project-dialog").open) openProject(id);
-  showToast(`Votre soutien à « ${project.title} » est simulé. Aucun vote n'a été enregistré.`);
+  const dialog = $("#vote-modal");
+  if (!project || !dialog) return;
+  $("#vote-modal-title", dialog).textContent = `Voter pour ${project.title}`;
+  $("#vote-project-name", dialog).textContent = `Votre contribution soutiendra « ${project.title} ».`;
+  $("#vote-project-id", dialog).value = project.id;
+  $("#vote-amount", dialog).value = "";
+  $("#payment-status", dialog).textContent = "";
+  if (!dialog.open) dialog.showModal();
+  $("#vote-amount", dialog).focus();
+}
+
+function setupVoteModal() {
+  const dialog = $("#vote-modal");
+  const form = $("#vote-form");
+  if (!dialog || !form) return;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const amount = $("#vote-amount", form);
+    if (!amount.reportValidity()) return;
+    const project = projectById($("#vote-project-id", form).value);
+    const formattedAmount = formatNumber(amount.valueAsNumber);
+    $("#payment-status", form).textContent = `Votre montant de ${formattedAmount} FCFA est prêt. SoleasPay n'est pas encore connecté : aucun paiement ni vote n'a été effectué.`;
+    if (project) $("#vote-project-name", form).textContent = `Projet choisi : ${project.title}. Le paiement sera activé après connexion de l'API SoleasPay.`;
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
 }
 
 function setupNavigation() {
   const toggle = $(".menu-toggle");
   const nav = $("#primary-nav");
-  toggle.addEventListener("click", () => {
-    const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
-    toggle.setAttribute("aria-label", expanded ? "Ouvrir le menu" : "Fermer le menu");
-    nav.classList.toggle("open", !expanded);
-  });
-  nav.addEventListener("click", (event) => {
-    if (!event.target.closest("a")) return;
-    nav.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-label", "Ouvrir le menu");
-  });
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      toggle.setAttribute("aria-label", expanded ? "Ouvrir le menu" : "Fermer le menu");
+      nav.classList.toggle("open", !expanded);
+    });
+    nav.addEventListener("click", (event) => {
+      if (!event.target.closest("a")) return;
+      nav.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Ouvrir le menu");
+    });
+  }
   document.addEventListener("click", (event) => {
-    const detailLink = event.target.closest("[data-details]");
-    if (detailLink) {
-      event.preventDefault();
-      openProject(detailLink.dataset.details);
-      return;
-    }
-    const voteButton = event.target.closest("[data-vote]");
+    const voteButton = event.target.closest("[data-vote-open]");
     if (voteButton) {
-      event.preventDefault();
-      castDemoVote(voteButton.dataset.vote);
+      openVoteModal(voteButton.dataset.voteOpen);
       return;
     }
-    if (event.target.closest(".dialog-close")) closeProject();
+    if (event.target.closest("[data-modal-close]")) $("#vote-modal")?.close();
   });
-  const dialog = $("#project-dialog");
-  dialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
-  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeProject(); });
 }
 
 function setupFilters() {
@@ -283,12 +274,17 @@ function setupFilters() {
 }
 
 function init() {
-  renderFeatured();
-  renderCategories();
-  renderProjects();
-  renderRanking();
   setupNavigation();
-  setupFilters();
+  setupVoteModal();
+  if ($("#project-detail-page")) {
+    renderProjectDetailPage();
+  } else {
+    if ($("#category-filters")) renderCategories();
+    if ($("#project-grid")) {
+      renderProjects();
+      setupFilters();
+    }
+  }
 }
 
 init();

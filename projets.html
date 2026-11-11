@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f2" />
+    <meta name="description" content="Parcourez les projets ÉLANOVA, filtrez les candidats et soutenez vos idées préférées." />
+    <title>Les projets — ÉLANOVA</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#votes">Aller aux projets</a>
+    <header class="site-header" id="top">
+      <div class="nav-shell">
+        <a class="brand" href="index.html#top" aria-label="ÉLANOVA, accueil">
+          <svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3.5 38.5 21 21 38.5 3.5 21 21 3.5Z" fill="currentColor"/><path d="M21 12v18M12 21h18" stroke="#f8f7f2" stroke-width="3" stroke-linecap="round"/><circle cx="21" cy="21" r="3.2" fill="#f27a59"/></svg>
+          <span>ÉLANOVA<span class="brand-period">.</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu"><span></span><span></span></button>
+        <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale">
+          <a href="index.html#top">Accueil</a>
+          <a href="index.html#mission">Notre mission</a>
+          <a href="index.html#fonctionnement">Comment ça marche</a>
+          <a href="#votes" aria-current="page">Les projets</a>
+        </nav>
+        <a class="button button-small button-dark nav-cta" href="#votes">Passer au vote <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="voting section-wrap section-pad" id="votes" aria-labelledby="votes-title">
+        <div class="voting-topline"><div class="campaign-status"><span class="live-dot"></span> CATALOGUE DE DÉMONSTRATION</div></div>
+        <div class="voting-heading"><div><div class="section-kicker">DÉCOUVREZ LES PORTEURS</div><h1 class="section-title" id="votes-title">Des idées concrètes.<br><em>Des parcours à soutenir.</em></h1><p class="voting-intro">Explorez les projets, découvrez leurs ambitions et choisissez ceux que vous souhaitez soutenir.</p></div><div class="campaign-stats"><div><strong id="project-count">08</strong><span>projets participants</span></div></div></div>
+        <div class="demo-notice"><span aria-hidden="true">ⓘ</span> Aucun vote ni paiement n'est enregistré ici. Les projets hors M.LAB sont fictifs ; SoleasPay sera connecté après réception de l'API.</div>
+        <div class="catalog-controls">
+          <div class="filter-row" id="category-filters" aria-label="Filtrer par catégorie"></div>
+          <div class="search-sort-row"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.3 4.3"></path></svg><input id="project-search" type="search" placeholder="Rechercher un projet ou un candidat" aria-label="Rechercher un projet ou un candidat"></label><label class="sort-select"><span>Trier par</span><select id="project-sort" aria-label="Trier les projets"><option value="az">Nom du projet (A–Z)</option><option value="za">Nom du projet (Z–A)</option><option value="category">Catégorie</option></select></label></div>
+        </div>
+        <p class="results-label" id="results-label" aria-live="polite"></p>
+        <div class="project-grid" id="project-grid"></div>
+        <div class="load-more-wrap"><button class="button button-outline" id="load-more" type="button">Charger plus de projets <span aria-hidden="true">↓</span></button></div>
+      </section>
+
+      <section class="closing-cta section-wrap" aria-labelledby="closing-title">
+        <div class="closing-decor" aria-hidden="true">✳</div><div class="closing-kicker">L'AVENIR SE CONSTRUIT ENSEMBLE</div><h2 id="closing-title">Une idée mérite une chance.<br><em>Votre soutien peut tout changer.</em></h2><a class="button button-light" href="#votes">Revenir aux projets <span aria-hidden="true">↗</span></a><span class="closing-small">Une démonstration, un grand pas pour demain.</span>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="section-wrap footer-main"><div class="footer-brand-col"><a class="brand brand-footer" href="index.html#top" aria-label="ÉLANOVA, retour à l'accueil"><svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3.5 38.5 21 21 38.5 3.5 21 21 3.5Z" fill="currentColor"/><path d="M21 12v18M12 21h18" stroke="#183d32" stroke-width="3" stroke-linecap="round"/><circle cx="21" cy="21" r="3.2" fill="#f27a59"/></svg><span>ÉLANOVA<span class="brand-period">.</span></span></a><p>Les idées méritent une scène.<br>Les talents, un nouvel élan.</p><div class="social-links"><a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">ig</a><a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">in</a><a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">f</a></div></div>
+        <div class="footer-column"><h3>Explorer</h3><a href="index.html#mission">Notre mission</a><a href="index.html#fonctionnement">Comment ça marche</a><a href="#votes">Les projets</a><a href="#votes">Soutenir un projet</a></div><div class="footer-column"><h3>ÉLANOVA</h3><a href="#votes">Nos talents</a><a href="#votes">Découvrir les projets</a><a href="mailto:bonjour@elanova.example">Nous contacter</a></div><div class="footer-contact"><span>UN MOT, UNE IDÉE&nbsp;?</span><a href="mailto:bonjour@elanova.example">bonjour@elanova.example <span aria-hidden="true">↗</span></a><small>Coordonnées fictives · Maquette de présentation</small></div></div>
+      <div class="section-wrap footer-bottom"><span>© 2026 ÉLANOVA · Maquette de démonstration</span><span>Fait avec conviction et un peu d'audace <b>✳</b></span></div>
+    </footer>
+    <dialog class="vote-modal" id="vote-modal" aria-labelledby="vote-modal-title">
+      <form class="vote-modal-form" id="vote-form">
+        <button class="modal-close" type="button" data-modal-close aria-label="Fermer">×</button>
+        <div class="section-kicker">VOTRE SOUTIEN COMPTE</div>
+        <h2 id="vote-modal-title">Voter pour ce projet</h2>
+        <p id="vote-project-name" class="modal-project-name">Choisissez le montant de votre contribution.</p>
+        <label class="amount-label" for="vote-amount">Montant à déposer pour le vote</label>
+        <div class="amount-input-wrap"><input id="vote-amount" name="amount" type="number" min="100" step="1" inputmode="numeric" placeholder="100" required><span>FCFA</span></div>
+        <p class="amount-hint">Minimum 100 FCFA · aucun plafond, indiquez le montant souhaité.</p>
+        <input id="vote-project-id" name="project" type="hidden">
+        <div class="payment-provider"><span class="provider-mark" aria-hidden="true">SP</span><span><strong>SoleasPay</strong><small>Moyen de paiement</small></span><span class="provider-check" aria-hidden="true">✓</span></div>
+        <button class="button button-coral payment-submit" type="submit">Déposer pour le vote <span aria-hidden="true">↗</span></button>
+        <p class="api-pending-note">SoleasPay n'est pas encore connecté. Aucun paiement ni vote ne sera effectué avant l'intégration de votre API.</p>
+        <p class="payment-status" id="payment-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+  </body>
+</html>

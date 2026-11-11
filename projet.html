@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f2" />
+    <meta name="description" content="Découvrez le porteur, la vision et les objectifs de ce projet ÉLANOVA." />
+    <title>Fiche projet — ÉLANOVA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#project-detail-content">Aller à la fiche projet</a>
+    <header class="site-header" id="top">
+      <div class="nav-shell">
+        <a class="brand" href="index.html#top" aria-label="ÉLANOVA, accueil">
+          <svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3.5 38.5 21 21 38.5 3.5 21 21 3.5Z" fill="currentColor"/><path d="M21 12v18M12 21h18" stroke="#f8f7f2" stroke-width="3" stroke-linecap="round"/><circle cx="21" cy="21" r="3.2" fill="#f27a59"/></svg>
+          <span>ÉLANOVA<span class="brand-period">.</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu"><span></span><span></span></button>
+        <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale">
+          <a href="index.html#top">Accueil</a>
+          <a href="index.html#mission">Notre mission</a>
+          <a href="index.html#fonctionnement">Comment ça marche</a>
+          <a href="projets.html#votes">Les projets</a>
+        </nav>
+        <a class="button button-small button-dark nav-cta" href="projets.html#votes">Tous les projets <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main class="project-detail-page" id="project-detail-page">
+      <div class="section-wrap" id="project-detail-content"><p>Chargement de la fiche projet…</p></div>
+    </main>
+
+    <dialog class="vote-modal" id="vote-modal" aria-labelledby="vote-modal-title">
+      <form class="vote-modal-form" id="vote-form">
+        <button class="modal-close" type="button" data-modal-close aria-label="Fermer">×</button>
+        <div class="section-kicker">VOTRE SOUTIEN COMPTE</div>
+        <h2 id="vote-modal-title">Voter pour ce projet</h2>
+        <p id="vote-project-name" class="modal-project-name">Choisissez le montant de votre contribution.</p>
+        <label class="amount-label" for="vote-amount">Montant à déposer pour le vote</label>
+        <div class="amount-input-wrap"><input id="vote-amount" name="amount" type="number" min="100" step="1" inputmode="numeric" placeholder="100" required><span>FCFA</span></div>
+        <p class="amount-hint">Minimum 100 FCFA · aucun plafond, indiquez le montant souhaité.</p>
+        <input id="vote-project-id" name="project" type="hidden">
+        <div class="payment-provider"><span class="provider-mark" aria-hidden="true">SP</span><span><strong>SoleasPay</strong><small>Moyen de paiement</small></span><span class="provider-check" aria-hidden="true">✓</span></div>
+        <button class="button button-coral payment-submit" type="submit">Déposer pour le vote <span aria-hidden="true">↗</span></button>
+        <p class="api-pending-note">SoleasPay n'est pas encore connecté. Aucun paiement ni vote ne sera effectué avant l'intégration de votre API.</p>
+        <p class="payment-status" id="payment-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+
+    <footer class="site-footer">
+      <div class="section-wrap footer-main"><div class="footer-brand-col"><a class="brand brand-footer" href="index.html#top" aria-label="ÉLANOVA, retour à l'accueil"><svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3.5 38.5 21 21 38.5 3.5 21 21 3.5Z" fill="currentColor"/><path d="M21 12v18M12 21h18" stroke="#183d32" stroke-width="3" stroke-linecap="round"/><circle cx="21" cy="21" r="3.2" fill="#f27a59"/></svg><span>ÉLANOVA<span class="brand-period">.</span></span></a><p>Les idées méritent une scène.<br>Les talents, un nouvel élan.</p></div><div class="footer-column"><h3>Explorer</h3><a href="projets.html#votes">Tous les projets</a><a href="index.html#mission">Notre mission</a></div><div class="footer-contact"><span>UN MOT, UNE IDÉE&nbsp;?</span><a href="mailto:bonjour@elanova.example">bonjour@elanova.example <span aria-hidden="true">↗</span></a><small>Coordonnées fictives · Maquette de présentation</small></div></div>
+      <div class="section-wrap footer-bottom"><span>© 2026 ÉLANOVA · Maquette de démonstration</span><span>Fait avec conviction et un peu d'audace <b>✳</b></span></div>
+    </footer>
+  </body>
+</html>
