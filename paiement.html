@@ -28,7 +28,7 @@
         <h1 id="payment-return-title">Vérification du paiement</h1>
         <p id="payment-return-message">Lecture du résultat transmis par SoleasPay…</p>
         <p class="payment-return-reference" id="payment-return-reference" hidden></p>
-        <p class="payment-return-note">Cette version du site ne vérifie pas les transactions sur un serveur et n’ajoute donc pas automatiquement de vote.</p>
+        <p class="payment-return-note">Conservez la référence de transaction pour le suivi et la confirmation de votre contribution.</p>
         <a class="button button-dark" href="projets.html#votes">Retourner aux projets <span aria-hidden="true">↗</span></a>
       </section>
     </main>
@@ -52,7 +52,7 @@
         message.textContent = `SoleasPay indique le statut ${status}. Conservez la référence de transaction et attendez sa vérification.`;
       } else if (query.get("retour") === "echec" || ["FAILED", "CANCELLED", "REFUNDED"].includes(status)) {
         title.textContent = "Paiement non confirmé";
-        message.textContent = status ? `SoleasPay indique le statut ${status}. Aucune contribution n'est comptabilisée comme vote.` : "Le paiement n'a pas abouti ou a été annulé. Aucune contribution n'est comptabilisée comme vote.";
+        message.textContent = status ? `SoleasPay indique le statut ${status}. Vous pouvez réessayer le paiement depuis la page du projet.` : "Le paiement n'a pas abouti ou a été annulé. Vous pouvez réessayer le paiement depuis la page du projet.";
       } else if (["INITIATED", "PENDING", "SUBMITTED", "PROCESSING"].includes(status)) {
         title.textContent = "Paiement en cours";
         message.textContent = `SoleasPay indique le statut ${status}. Suivez les instructions reçues sur votre téléphone.`;

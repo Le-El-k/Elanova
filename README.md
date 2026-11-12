@@ -1,20 +1,17 @@
-# ÉLANOVA — maquette frontend
+# ÉLANOVA — plateforme de soutien aux projets
 
-Site statique en français, avec paiement hébergé SoleasPay Checkout v4.
+Site en français pour découvrir les porteurs de projet et contribuer à leurs initiatives.
 
-Le premier projet présente M.LAB / BEST SOAP SERVICES à partir des informations et photos fournies. Cinq autres portraits fournis sont associés aux noms et idées demandés ; le nom « Marius Tchoumi » et les projets hors M.LAB sont fictifs pour la démonstration.
+## Pages
 
-## Ouvrir la maquette
+- index.html : accueil, mission et fonctionnement.
+- projets.html : catalogue des six projets et formulaire de paiement.
+- projet.html : fiche dédiée à chaque projet.
+- paiement.html : retour du checkout SoleasPay.
+- app.js : projets, navigation, formulaire et initialisation du paiement.
+- styles.css : identité visuelle et adaptation aux écrans.
+- assets/ : portraits et images utilisés par le site.
 
-Ouvrez `index.html` dans un navigateur. Toutes les images sont stockées dans `assets/`. Les polices proviennent de Google Fonts et nécessitent une connexion Internet.
+## Paiements
 
-## Contenu
-
-- `index.html` : structure des pages et sections.
-- `projets.html` : catalogue et formulaire de montant pour le vote. Les boutons « Passer au vote » y conduisent.
-- `projet.html` : modèle de fiche dédiée, ouvert avec l'identifiant du projet dans l'URL.
-- `styles.css` : identité visuelle et mises en page responsive.
-- `app.js` : données, filtres, recherche, navigation vers les fiches et validation du montant minimum.
-- `assets/` : photos fournies pour M.LAB et les cinq profils suivants.
-
-Les compteurs et classements de votes fictifs ont été retirés. Le formulaire accepte un montant entier à partir de 100 FCFA sans plafond et redirige vers la page de paiement hébergée par SoleasPay ; les frais sont ajoutés au montant et payés par le votant. La maquette ne valide ni ne comptabilise automatiquement les votes après paiement ; une vérification serveur et un stockage des transactions seront nécessaires pour cela.
+Le checkout SoleasPay accepte un montant d’au moins 100 FCFA. Les frais de dépôt sont ajoutés au montant et payés par le votant. La confirmation d’un vote nécessite le rapprochement de la transaction et du projet concerné.

@@ -3,7 +3,7 @@ const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5bi
 const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
 const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
 
-// M.LAB utilise les contenus fournis par le porteur. Les idées des autres projets sont fictives pour la maquette.
+// Profils et projets présentés sur ÉLANOVA.
 const projects = [
   {
     id: "mlab-best-soap", name: "Promoteur de M.LAB", initials: "ML", title: "M.LAB / BEST SOAP SERVICES", category: "Commerce et services",
@@ -25,7 +25,7 @@ const projects = [
     long: "AgroMboa Direct imagine un réseau de collecte de produits agricoles auprès des petits producteurs, avec une mise en relation simple avec les commerces, restaurants et familles. Le projet veut mieux valoriser les récoltes locales et faciliter leur accès aux marchés.",
     problem: "Les producteurs ont parfois du mal à trouver des débouchés réguliers et à acheminer leurs récoltes. Les acheteurs, eux, ne savent pas toujours où trouver des produits locaux en quantité et au bon moment.",
     solution: "Organiser des points de collecte de proximité, regrouper les commandes et partager les disponibilités des producteurs avec les acheteurs locaux.",
-    goals: "Lancer trois points de collecte pilotes, accompagner 40 producteurs et tester un premier service de commandes groupées.",
+    goals: "Créer trois points de collecte, accompagner 40 producteurs et lancer un service de commandes groupées.",
     future: "Étendre le réseau à de nouvelles filières et développer des solutions de conservation adaptées aux récoltes locales."
   },
   {
@@ -35,7 +35,7 @@ const projects = [
     long: "Les Savoirs en Mouvement propose des ateliers itinérants où les jeunes peuvent lire, découvrir des outils numériques et réaliser des activités créatives. Le programme est conçu pour être accueilli dans des écoles et des espaces associatifs.",
     problem: "Certains jeunes ont peu d'occasions d'accéder à des livres, à des outils numériques et à des activités pratiques en complément des cours.",
     solution: "Mettre à disposition des malles de livres et de matériel numérique, puis organiser des ateliers animés avec les relais éducatifs locaux.",
-    goals: "Créer deux kits mobiles, organiser 24 ateliers et accueillir au moins 200 jeunes lors d'une première phase pilote.",
+    goals: "Créer deux kits mobiles, organiser 24 ateliers et accueillir au moins 200 jeunes lors d'un premier programme.",
     future: "Former des animateurs locaux et élargir le programme à davantage d'établissements et d'associations."
   },
   {
@@ -45,7 +45,7 @@ const projects = [
     long: "ReStart Mobile veut ouvrir un atelier de réparation et de reconditionnement de téléphones. Le projet associe un service de proximité à une formation pratique pour transmettre les bases du diagnostic, de la réparation et du réemploi électronique.",
     problem: "Les pannes de téléphone coûtent cher, les appareils inutilisés s'accumulent et les jeunes disposent de peu d'espaces pour apprendre la réparation sur du matériel réel.",
     solution: "Un atelier qui propose diagnostic et réparation, récupère les appareils réparables et organise des parcours pratiques avec des techniciens expérimentés.",
-    goals: "Équiper un atelier pilote, former 12 jeunes et remettre en circulation les premiers appareils reconditionnés avec un suivi après-vente.",
+    goals: "Équiper un atelier de réparation, former 12 jeunes et remettre en circulation les premiers appareils reconditionnés avec un suivi après-vente.",
     future: "Créer un service local de collecte et de réparation, puis proposer des ateliers dans d'autres quartiers."
   },
   {
@@ -55,8 +55,8 @@ const projects = [
     long: "AgriPulse Local accompagne de petits jardins maraîchers avec des systèmes d'irrigation économes, des conseils pratiques et une meilleure planification des cultures. L'objectif est de produire toute l'année en utilisant l'eau avec soin.",
     problem: "Les petites exploitations subissent les périodes sèches, les pertes de récoltes et le manque d'équipements simples pour mieux gérer l'eau.",
     solution: "Installer des dispositifs d'irrigation adaptés à petite échelle, former les producteurs à leur entretien et partager des méthodes de culture agroécologiques.",
-    goals: "Créer deux parcelles pilotes, accompagner 20 producteurs et suivre la consommation d'eau et les récoltes sur une première saison.",
-    future: "Faire connaître ces pratiques dans de nouveaux groupements de producteurs et tester des équipements fabriqués ou assemblés localement."
+    goals: "Aménager deux parcelles maraîchères, accompagner 20 producteurs et suivre la consommation d'eau ainsi que les récoltes sur une première saison.",
+    future: "Faire connaître ces pratiques dans de nouveaux groupements de producteurs et déployer des équipements fabriqués ou assemblés localement."
   },
   {
     id: "naya-racines", name: "Kenfack Natacha Sandrine", initials: "KN", title: "Naya Racines", category: "Entrepreneuriat",
@@ -64,8 +64,8 @@ const projects = [
     location: "Cameroun", avatar: "assets/kenfack-natacha-sandrine.png", image: "assets/kenfack-natacha-sandrine.png", imagePosition: "50% 34%", avatarPosition: "50% 34%",
     long: "Naya Racines développe une petite gamme de soins pour la peau et les cheveux à base d'ingrédients végétaux disponibles localement. La démarche associe formulation soignée, production en petits lots et présentation claire de la composition des produits.",
     problem: "Les consommateurs cherchent des soins abordables et transparents, tandis que les petites productrices ont besoin d'accompagnement pour structurer leur fabrication et leur commercialisation.",
-    solution: "Prototyper des savons et baumes simples, documenter les recettes et les bonnes pratiques d'hygiène, puis tester les produits auprès de premiers clients.",
-    goals: "Développer trois produits pilotes, former une petite équipe aux pratiques de fabrication et tester une première vente locale.",
+    solution: "Produire une première gamme de savons et baumes simples, documenter les recettes et les bonnes pratiques d'hygiène, puis la proposer aux premiers clients.",
+    goals: "Lancer trois produits, former une petite équipe aux pratiques de fabrication et démarrer leur vente locale.",
     future: "Faire évoluer la gamme, nouer des partenariats d'approvisionnement responsable et créer des opportunités pour d'autres jeunes entrepreneuses."
   }
 ];
@@ -140,7 +140,6 @@ function renderProjectDetailPage() {
   }
 
   document.title = `${project.title} — ÉLANOVA`;
-  const projectStatusNotice = project.id === "mlab-best-soap" ? "" : `<div class="detail-demo-notice">Projet et description fictifs, créés pour cette maquette de présentation.</div>`;
   container.innerHTML = `
     <div class="project-detail-wrap">
       <a class="project-back" href="projets.html#votes"><span aria-hidden="true">←</span> Retour aux projets</a>
@@ -158,7 +157,6 @@ function renderProjectDetailPage() {
 
       <div class="project-detail-layout">
         <div class="project-detail-main">
-          ${projectStatusNotice}
           <section class="detail-section"><div class="section-kicker">L'INITIATIVE</div><h2>Une idée, une ambition.</h2><p>${project.long}</p></section>
           ${project.gallery ? `<figure class="project-detail-gallery"><img src="${project.gallery}" alt="Photo de motivation du promoteur de M.LAB"><figcaption><span>La devise du promoteur</span><blockquote>« ${project.motto} »</blockquote></figcaption></figure>` : ""}
           <section class="detail-section"><div class="detail-section-label"><span>01</span><h2>Le problème</h2></div><p>${project.problem}</p></section>
