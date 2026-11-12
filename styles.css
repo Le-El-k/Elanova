@@ -215,6 +215,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .project-card-body .candidate-line img { width: 28px; height: 28px; }
 .project-card-body h3 { margin: 10px 0 5px; font: 700 17px/1.3 var(--display); letter-spacing: -.04em; }
 .project-card-body > p { min-height: 43px; margin: 0; color: var(--ink-soft); font-size: 10px; line-height: 1.7; }
+.project-vote-count { display: flex; align-items: baseline; gap: 7px; color: #66736a; }
+.project-vote-count strong { color: var(--green-deep); font: 800 17px/1 var(--display); }
+.project-vote-count span { font-size: 10px; }
+.project-card .project-vote-count { margin-top: 12px; padding-top: 10px; border-top: 1px solid #eeede6; }
 .project-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin-top: 13px; padding-top: 11px; border-top: 1px solid #eeede6; }
 .project-card-actions { display: flex; gap: 6px; margin-top: 11px; }
 .project-card-actions button { min-height: 34px; flex: 1; padding-inline: 8px; border: 1px solid var(--green-deep); color: var(--green-deep); background: transparent; font-size: 9px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
@@ -267,6 +271,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .project-detail-person strong, .project-detail-person small { display: block; }
 .project-detail-person strong { font: 700 14px var(--display); }
 .project-detail-person small { margin-top: 3px; color: #737c73; font-size: 12px; }
+.project-detail-votes { margin-top: 17px; }
+.project-detail-votes strong { font-size: 22px; }
+.project-detail-votes span { font-size: 12px; }
 .project-detail-summary { max-width: 520px; margin: 20px 0; color: var(--ink-soft); font-size: 16px; line-height: 1.75; }
 .project-detail-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
 .project-detail-actions > span { color: #7a837a; font-size: 12px; }

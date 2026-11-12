@@ -2,6 +2,7 @@
 const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5biWPwqUAP";
 const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
 const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
+const ELANOVA_API_URL = String(window.ELANOVA_API_URL || "").trim().replace(/\/+$/, "");
 
 // Profils et projets présentés sur ÉLANOVA.
 const projects = [
@@ -72,6 +73,7 @@ const projects = [
 
 const categories = ["Toutes les catégories", "Technologie et innovation", "Agriculture", "Éducation", "Santé", "Environnement", "Entrepreneuriat", "Commerce et services"];
 const state = { selectedCategory: categories[0], search: "", sort: "az", visibleCount: 6 };
+let latestVoteCounts = null;
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 const formatNumber = (number) => new Intl.NumberFormat("fr-FR").format(number);
@@ -113,6 +115,7 @@ function projectCard(project) {
       <div class="project-card-body">
         <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
+        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>compteur à connecter</span></div>
         <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
@@ -125,6 +128,7 @@ function renderProjects() {
   $("#results-label").textContent = `${results.length} projet${results.length > 1 ? "s" : ""} ${state.selectedCategory !== categories[0] ? `dans « ${state.selectedCategory} »` : "à découvrir"}`;
   $("#load-more").parentElement.hidden = results.length <= state.visibleCount;
   $("#project-count").textContent = String(projects.length).padStart(2, "0");
+  if (latestVoteCounts) renderVoteCounts(latestVoteCounts);
 }
 
 function renderProjectDetailPage() {
@@ -149,6 +153,7 @@ function renderProjectDetailPage() {
           <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
           <h1 id="project-page-title">${project.title}</h1>
           <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
+          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>compteur à connecter</span></div>
           <p class="project-detail-summary">${project.short}</p>
           <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
         </div>
@@ -170,6 +175,39 @@ function renderProjectDetailPage() {
         </aside>
       </div>
     </div>`;
+  if (latestVoteCounts) renderVoteCounts(latestVoteCounts);
+}
+
+function renderVoteCounts(counts) {
+  $$('[data-vote-count]').forEach((element) => {
+    const projectId = element.dataset.voteCount;
+    const count = Number(counts?.[projectId]);
+    const value = $("strong", element);
+    const label = $("span", element);
+    if (!Number.isFinite(count) || count < 0) {
+      value.textContent = "—";
+      label.textContent = "décompte indisponible";
+      return;
+    }
+    value.textContent = formatNumber(count);
+    label.textContent = `vote${count === 1 ? "" : "s"} confirmé${count === 1 ? "" : "s"}`;
+  });
+}
+
+async function loadVoteCounts() {
+  if (!ELANOVA_API_URL) return;
+  try {
+    const response = await fetch(`${ELANOVA_API_URL}/api/votes/counts`, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error("Le compteur de votes est indisponible.");
+    const payload = await response.json();
+    latestVoteCounts = payload.counts || {};
+    renderVoteCounts(latestVoteCounts);
+  } catch {
+    $$('[data-vote-count]').forEach((element) => {
+      $("strong", element).textContent = "—";
+      $("span", element).textContent = "décompte indisponible";
+    });
+  }
 }
 
 function openVoteModal(id) {
@@ -189,15 +227,47 @@ function setupVoteModal() {
   const dialog = $("#vote-modal");
   const form = $("#vote-form");
   if (!dialog || !form) return;
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const amount = $("#vote-amount", form);
     if (!amount.reportValidity()) return;
     const project = projectById($("#vote-project-id", form).value);
     if (!project) return;
 
-    const orderToken = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-    const orderId = `ELANOVA-${project.id}-${orderToken}`;
+    const submitButton = $(".payment-submit", form);
+    const statusMessage = $("#payment-status", form);
+    if (!ELANOVA_API_URL) {
+      statusMessage.textContent = "Le service de vérification des paiements n'est pas encore connecté. Le vote ne peut pas être lancé.";
+      return;
+    }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute("aria-busy", "true");
+    }
+    statusMessage.textContent = "Préparation du paiement sécurisé…";
+
+    let orderId;
+    try {
+      const orderResponse = await fetch(`${ELANOVA_API_URL}/api/votes/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ projectId: project.id, amount: amount.valueAsNumber })
+      });
+      const orderPayload = await orderResponse.json().catch(() => ({}));
+      if (!orderResponse.ok || !orderPayload.orderId) {
+        throw new Error(orderPayload.message || "Impossible de préparer le paiement. Réessayez dans quelques instants.");
+      }
+      orderId = orderPayload.orderId;
+    } catch (error) {
+      statusMessage.textContent = error.message || "Le service de paiement est momentanément indisponible.";
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.removeAttribute("aria-busy");
+      }
+      return;
+    }
+
     const checkoutFields = {
       apiKey: SOLEASPAY_API_KEY,
       amount: amount.value,
@@ -225,11 +295,6 @@ function setupVoteModal() {
 
     const formattedAmount = formatNumber(amount.valueAsNumber);
     $("#payment-status", form).textContent = `Redirection vers SoleasPay pour payer ${formattedAmount} FCFA…`;
-    const submitButton = $(".payment-submit", form);
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.setAttribute("aria-busy", "true");
-    }
     HTMLFormElement.prototype.submit.call(checkoutForm);
   });
   dialog.addEventListener("click", (event) => {
@@ -299,6 +364,12 @@ function init() {
       renderProjects();
       setupFilters();
     }
+  }
+  loadVoteCounts();
+  if (ELANOVA_API_URL) {
+    window.setInterval(() => {
+      if (!document.hidden) loadVoteCounts();
+    }, 30_000);
   }
 }
 
