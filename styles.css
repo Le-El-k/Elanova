@@ -335,6 +335,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .api-pending-note { margin: 13px 0 0; color: #7c755f; font-size: 11px; line-height: 1.6; }
 .payment-status { margin: 12px 0 0; color: var(--green-deep); font-size: 13px; font-weight: 600; line-height: 1.6; }
 .payment-status:empty { display: none; }
+.payment-return-page { min-height: calc(100vh - 90px); display: grid; place-items: center; padding: 40px 20px 80px; }
+.payment-return-card { width: min(680px,100%); padding: clamp(26px,6vw,54px); border: 1px solid var(--line); background: var(--white); box-shadow: 0 18px 55px #193d3210; }
+.payment-return-card h1 { margin: 12px 0; color: var(--ink); font: 700 clamp(30px,6vw,46px)/1.12 var(--display); letter-spacing: -.05em; }
+.payment-return-card > p { color: var(--ink-soft); font-size: 15px; line-height: 1.75; }
+.payment-return-card .payment-return-reference { color: var(--green-deep); font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+.payment-return-card .payment-return-note { margin: 24px 0; padding: 13px 15px; border-left: 3px solid var(--coral); background: #f9f3e8; font-size: 13px; }
+.payment-return-card .button { margin-top: 8px; }
 
 @media (min-width: 1500px) { :root { --page-width: 1260px; } }
 @media (max-width: 1050px) {

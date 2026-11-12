@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f2" />
+    <meta name="description" content="Retour de paiement SoleasPay — ÉLANOVA." />
+    <title>Retour de paiement — ÉLANOVA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#payment-result">Aller au résultat du paiement</a>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html" aria-label="ÉLANOVA, accueil">
+          <svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3.5 38.5 21 21 38.5 3.5 21 21 3.5Z" fill="currentColor"/><path d="M21 12v18M12 21h18" stroke="#f8f7f2" stroke-width="3" stroke-linecap="round"/><circle cx="21" cy="21" r="3.2" fill="#f27a59"/></svg>
+          <span>ÉLANOVA<span class="brand-period">.</span></span>
+        </a>
+        <a class="button button-small button-dark" href="projets.html#votes">Retour aux projets <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+    <main class="payment-return-page">
+      <section class="payment-return-card" id="payment-result" aria-live="polite">
+        <div class="section-kicker">RETOUR SOLEASPAY</div>
+        <h1 id="payment-return-title">Vérification du paiement</h1>
+        <p id="payment-return-message">Lecture du résultat transmis par SoleasPay…</p>
+        <p class="payment-return-reference" id="payment-return-reference" hidden></p>
+        <p class="payment-return-note">Cette version du site ne vérifie pas les transactions sur un serveur et n’ajoute donc pas automatiquement de vote.</p>
+        <a class="button button-dark" href="projets.html#votes">Retourner aux projets <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+    <script>
+      const query = new URLSearchParams(window.location.search);
+      let paymentData = null;
+      try {
+        const rawData = query.get("soleaspay_data");
+        if (rawData) paymentData = JSON.parse(rawData);
+      } catch {
+        paymentData = null;
+      }
+
+      const status = String(paymentData?.status || "").toUpperCase();
+      const title = document.getElementById("payment-return-title");
+      const message = document.getElementById("payment-return-message");
+      const reference = document.getElementById("payment-return-reference");
+
+      if (["SUCCESS", "COMPLETED"].includes(status)) {
+        title.textContent = "Retour de paiement reçu";
+        message.textContent = `SoleasPay indique le statut ${status}. Conservez la référence de transaction et attendez sa vérification.`;
+      } else if (query.get("retour") === "echec" || ["FAILED", "CANCELLED", "REFUNDED"].includes(status)) {
+        title.textContent = "Paiement non confirmé";
+        message.textContent = status ? `SoleasPay indique le statut ${status}. Aucune contribution n'est comptabilisée comme vote.` : "Le paiement n'a pas abouti ou a été annulé. Aucune contribution n'est comptabilisée comme vote.";
+      } else if (["INITIATED", "PENDING", "SUBMITTED", "PROCESSING"].includes(status)) {
+        title.textContent = "Paiement en cours";
+        message.textContent = `SoleasPay indique le statut ${status}. Suivez les instructions reçues sur votre téléphone.`;
+      } else {
+        title.textContent = "Retour de paiement reçu";
+        message.textContent = "Aucun statut de transaction exploitable n'a été transmis. Vérifiez le paiement auprès de SoleasPay avant de considérer le vote comme confirmé.";
+      }
+
+      const transactionReference = paymentData?.transaction_reference || paymentData?.reference;
+      if (transactionReference) {
+        reference.hidden = false;
+        reference.textContent = `Référence de transaction : ${transactionReference}`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,3 +1,8 @@
+// SoleasPay Checkout v4. Cette clé est destinée au flux Checkout public du marchand.
+const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5biWPwqUAP";
+const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
+const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
+
 // M.LAB utilise les contenus fournis par le porteur. Les idées des autres projets sont fictives pour la maquette.
 const projects = [
   {
@@ -184,7 +189,7 @@ function renderProjectDetailPage() {
           <section class="detail-section"><div class="detail-section-label"><span>04</span><h2>La vision</h2></div><p>${project.future}</p></section>
         </div>
         <aside class="project-detail-sidebar" aria-label="Soutenir le projet">
-          <div class="payment-card" id="soutenir"><span class="payment-icon" aria-hidden="true">＋</span><div class="section-kicker">CONTRIBUTION AU VOTE</div><h2>Soutenir ce projet</h2><p>Choisissez le montant de votre contribution. Le minimum est de 100 FCFA, sans plafond.</p><div class="payment-method-inline"><strong>SoleasPay</strong><span>Mode de paiement</span></div><button class="payment-button" type="button" data-vote-open="${project.id}">Déposer pour voter <span aria-hidden="true">↗</span></button><small class="payment-disabled-note">Paiement en attente de connexion de l'API.</small></div>
+          <div class="payment-card" id="soutenir"><span class="payment-icon" aria-hidden="true">＋</span><div class="section-kicker">CONTRIBUTION AU VOTE</div><h2>Soutenir ce projet</h2><p>Choisissez le montant de votre contribution. Le minimum est de 100 FCFA, sans plafond.</p><div class="payment-method-inline"><strong>SoleasPay</strong><span>Mode de paiement</span></div><button class="payment-button" type="button" data-vote-open="${project.id}">Déposer pour voter <span aria-hidden="true">↗</span></button><small class="payment-disabled-note">Paiement traité sur SoleasPay ; vote en attente de vérification.</small></div>
           <a class="sidebar-back-link" href="projets.html#votes">← Découvrir les autres projets</a>
         </aside>
       </div>
@@ -213,9 +218,42 @@ function setupVoteModal() {
     const amount = $("#vote-amount", form);
     if (!amount.reportValidity()) return;
     const project = projectById($("#vote-project-id", form).value);
+    if (!project) return;
+
+    const orderToken = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const orderId = `ELANOVA-${project.id}-${orderToken}`;
+    const checkoutFields = {
+      apiKey: SOLEASPAY_API_KEY,
+      amount: amount.value,
+      currency: "XAF",
+      orderId,
+      description: `Contribution au vote ÉLANOVA — ${project.title}`,
+      shopName: "ÉLANOVA",
+      successUrl: SOLEASPAY_SUCCESS_URL,
+      failureUrl: SOLEASPAY_FAILURE_URL,
+      area: "CMR"
+    };
+    const checkoutForm = document.createElement("form");
+    checkoutForm.method = "POST";
+    checkoutForm.action = "https://pay.soleaspay.com";
+    checkoutForm.hidden = true;
+    Object.entries(checkoutFields).forEach(([name, value]) => {
+      const field = document.createElement("input");
+      field.type = "hidden";
+      field.name = name;
+      field.value = String(value);
+      checkoutForm.appendChild(field);
+    });
+    document.body.appendChild(checkoutForm);
+
     const formattedAmount = formatNumber(amount.valueAsNumber);
-    $("#payment-status", form).textContent = `Votre montant de ${formattedAmount} FCFA est prêt. SoleasPay n'est pas encore connecté : aucun paiement ni vote n'a été effectué.`;
-    if (project) $("#vote-project-name", form).textContent = `Projet choisi : ${project.title}. Le paiement sera activé après connexion de l'API SoleasPay.`;
+    $("#payment-status", form).textContent = `Redirection vers SoleasPay pour payer ${formattedAmount} FCFA…`;
+    const submitButton = $(".payment-submit", form);
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute("aria-busy", "true");
+    }
+    HTMLFormElement.prototype.submit.call(checkoutForm);
   });
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
