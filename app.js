@@ -66,8 +66,8 @@ const projects = [
   {
     id: "atelier-ndolo", name: "Estelle Ndom", initials: "EN", title: "Atelier Ndolo", category: "Commerce et services",
     short: "Un atelier de couture circulaire pour réparer, transformer et transmettre.",
-    location: "Limbe, Cameroun", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=82",
+    location: "Limbe, Cameroun", avatar: "assets/atelier-ndolo-avatar.jpg",
+    image: "assets/atelier-ndolo-projet.jpg",
     long: "Atelier Ndolo donne une seconde vie aux vêtements grâce à la retouche, à la transformation et à des ateliers pratiques. Les créations sont réalisées à partir de textiles récupérés et de tissus de la région.",
     problem: "Les vêtements peu utilisés s'accumulent, tandis que les services de réparation accessibles et les espaces de transmission manquent.",
     solution: "Un atelier de quartier où l'on peut faire réparer ses vêtements, apprendre à coudre et découvrir des pièces revalorisées.",
@@ -77,8 +77,8 @@ const projects = [
   {
     id: "solaire-ensemble", name: "Armand Fongang", initials: "AF", title: "Solaire Ensemble", category: "Environnement",
     short: "Des solutions solaires de proximité pensées avec les habitants.",
-    location: "Ngaoundéré, Cameroun", avatar: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=240&h=240&q=82",
-    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1000&q=82",
+    location: "Ngaoundéré, Cameroun", avatar: "assets/solaire-ensemble-avatar.jpg",
+    image: "assets/solaire-ensemble-projet.jpg",
     long: "Solaire Ensemble accompagne des petits commerces et des associations pour imaginer des solutions d'énergie solaire adaptées à leurs besoins. Le projet privilégie l'installation locale, l'entretien et le partage des compétences.",
     problem: "Les solutions d'énergie solaire sont parfois difficiles à choisir, installer et entretenir sans accompagnement de proximité.",
     solution: "Un diagnostic simple, des équipements adaptés aux usages et une formation à l'entretien avec des techniciens du territoire.",

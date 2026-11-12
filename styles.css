@@ -109,8 +109,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .step-illustration { height: 190px; margin-bottom: 24px; position: relative; overflow: hidden; border: 1px solid #e3e2d9; background: #f9f8f2; }
 .step-illustration-one { background: #ecf0e9; }
 .mini-photo { position: absolute; display: block; background-position: center; background-size: cover; }
-.mini-photo-one { width: 82px; height: 108px; top: 36px; left: calc(50% - 83px); border-radius: 48px 48px 3px 3px; background-image: url("https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&q=80"); }
-.mini-photo-two { width: 74px; height: 97px; top: 50px; left: calc(50% + 21px); border-radius: 42px 42px 3px 3px; background-image: url("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80"); }
+.mini-photo-one { width: 82px; height: 108px; top: 36px; left: calc(50% - 83px); border-radius: 48px 48px 3px 3px; background-image: url("assets/hero-entrepreneuse.jpg"); }
+.mini-photo-two { width: 74px; height: 97px; top: 50px; left: calc(50% + 21px); border-radius: 42px 42px 3px 3px; background-image: url("assets/portrait-homme-illustration.jpg"); }
 .mini-card-lines { width: 160px; height: 37px; position: absolute; left: calc(50% - 80px); bottom: 17px; background: var(--white); box-shadow: 0 5px 20px #264c3820; }
 .mini-card-lines::before, .mini-card-lines::after { content: ""; height: 4px; position: absolute; left: 13px; background: #dce4dc; }
 .mini-card-lines::before { width: 67px; top: 10px; }.mini-card-lines::after { width: 107px; top: 21px; }

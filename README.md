@@ -6,7 +6,7 @@ Le premier projet présente M.LAB / BEST SOAP SERVICES à partir des information
 
 ## Ouvrir la maquette
 
-Ouvrez `index.html` dans un navigateur. Les photos et les polices sont chargées depuis Unsplash et Google Fonts et nécessitent une connexion Internet.
+Ouvrez `index.html` dans un navigateur. Toutes les images sont stockées dans `assets/`. Les polices proviennent de Google Fonts et nécessitent une connexion Internet.
 
 ## Contenu
 
