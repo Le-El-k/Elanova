@@ -122,10 +122,10 @@ async function fetchSoleasTransaction(transactionReference) {
 
 async function getProjectVoteCount(projectId) {
   const result = await pool.query(
-    "SELECT COUNT(*)::INTEGER AS count FROM vote_orders WHERE project_id = $1 AND status IN ('COMPLETED', 'SUCCESS')",
+    "SELECT FLOOR(SUM(amount)::NUMERIC / 100)::BIGINT AS count FROM vote_orders WHERE project_id = $1 AND status IN ('COMPLETED', 'SUCCESS')",
     [projectId]
   );
-  return result.rows[0].count;
+  return Number(result.rows[0].count || 0);
 }
 
 async function saveVerifiedTransaction(order, transaction) {
@@ -182,7 +182,7 @@ app.get("/api/health", async (_request, response, next) => {
 app.get("/api/votes/counts", async (_request, response, next) => {
   try {
     const result = await pool.query(
-      "SELECT project_id, COUNT(*)::INTEGER AS count FROM vote_orders WHERE status IN ('COMPLETED', 'SUCCESS') GROUP BY project_id"
+      "SELECT project_id, FLOOR(SUM(amount)::NUMERIC / 100)::BIGINT AS count FROM vote_orders WHERE status IN ('COMPLETED', 'SUCCESS') GROUP BY project_id"
     );
     const counts = Object.fromEntries(projectIds.map((projectId) => [projectId, 0]));
     for (const row of result.rows) counts[row.project_id] = row.count;

@@ -95,7 +95,7 @@
             if (!response.ok) throw new Error(result.message || "La vérification n'a pas abouti.");
             if (result.confirmed) {
               title.textContent = "Vote confirmé";
-              message.textContent = `Le paiement est confirmé par SoleasPay. Ce projet compte maintenant ${new Intl.NumberFormat("fr-FR").format(result.count)} vote${result.count === 1 ? "" : "s"} confirmé${result.count === 1 ? "" : "s"}.`;
+              message.textContent = `Le paiement est confirmé par SoleasPay. Ce projet compte maintenant ${new Intl.NumberFormat("fr-FR").format(result.count)} voix confirmée${result.count === 1 ? "" : "s"}.`;
               if (result.projectId) {
                 returnLink.href = `projet.html?projet=${encodeURIComponent(result.projectId)}`;
                 returnLink.innerHTML = 'Voir le projet <span aria-hidden="true">↗</span>';

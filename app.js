@@ -115,7 +115,7 @@ function projectCard(project) {
       <div class="project-card-body">
         <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
-        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>compteur à connecter</span></div>
+        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix confirmées</span></div>
         <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
@@ -128,7 +128,10 @@ function renderProjects() {
   $("#results-label").textContent = `${results.length} projet${results.length > 1 ? "s" : ""} ${state.selectedCategory !== categories[0] ? `dans « ${state.selectedCategory} »` : "à découvrir"}`;
   $("#load-more").parentElement.hidden = results.length <= state.visibleCount;
   $("#project-count").textContent = String(projects.length).padStart(2, "0");
-  if (latestVoteCounts) renderVoteCounts(latestVoteCounts);
+  if (latestVoteCounts) {
+    renderVoteCounts(latestVoteCounts);
+    renderRanking(latestVoteCounts);
+  }
 }
 
 function renderProjectDetailPage() {
@@ -153,7 +156,7 @@ function renderProjectDetailPage() {
           <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
           <h1 id="project-page-title">${project.title}</h1>
           <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
-          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>compteur à connecter</span></div>
+          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix confirmées</span></div>
           <p class="project-detail-summary">${project.short}</p>
           <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
         </div>
@@ -190,8 +193,28 @@ function renderVoteCounts(counts) {
       return;
     }
     value.textContent = formatNumber(count);
-    label.textContent = `vote${count === 1 ? "" : "s"} confirmé${count === 1 ? "" : "s"}`;
+    label.textContent = `voix confirmée${count === 1 ? "" : "s"}`;
   });
+}
+
+function renderRanking(counts) {
+  const list = $("#ranking-list");
+  if (!list) return;
+  const ranking = projects
+    .map((project) => ({ project, votes: Number(counts?.[project.id]) || 0 }))
+    .sort((a, b) => b.votes - a.votes || a.project.title.localeCompare(b.project.title, "fr"));
+  if (!ranking.some((entry) => entry.votes > 0)) {
+    list.innerHTML = '<li class="ranking-empty">Le classement apparaîtra après les premières voix confirmées.</li>';
+    return;
+  }
+
+  let rank = 0;
+  let previousVotes = null;
+  list.innerHTML = ranking.map(({ project, votes }, index) => {
+    if (votes !== previousVotes) rank = index + 1;
+    previousVotes = votes;
+    return `<li class="live-ranking-row"><span class="live-ranking-rank">${rank}</span><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span class="live-ranking-name"><a href="${projectPageUrl(project)}">${project.name}</a><small>${project.title}</small></span><strong>${formatNumber(votes)}</strong><span class="live-ranking-unit">voix</span></li>`;
+  }).join("");
 }
 
 async function loadVoteCounts() {
@@ -202,11 +225,14 @@ async function loadVoteCounts() {
     const payload = await response.json();
     latestVoteCounts = payload.counts || {};
     renderVoteCounts(latestVoteCounts);
+    renderRanking(latestVoteCounts);
   } catch {
     $$('[data-vote-count]').forEach((element) => {
       $("strong", element).textContent = "—";
       $("span", element).textContent = "décompte indisponible";
     });
+    const rankingList = $("#ranking-list");
+    if (rankingList) rankingList.innerHTML = '<li class="ranking-empty">Le classement n’est pas disponible pour le moment.</li>';
   }
 }
 

@@ -16,7 +16,7 @@ Site en français pour découvrir les porteurs de projet et contribuer à leurs 
 
 ## Paiements
 
-Le checkout SoleasPay accepte un montant d’au moins 100 FCFA. Les frais de dépôt sont ajoutés au montant et payés par le votant. Le catalogue affiche un vote par transaction vérifiée avec le statut `COMPLETED` ou `SUCCESS`. Les références, le projet, le montant et la devise doivent correspondre à la commande enregistrée avant le paiement. Les doublons ne créent pas de votes supplémentaires et les remboursements retirent le vote du compteur.
+Le checkout SoleasPay accepte un montant d’au moins 100 FCFA. Les frais de dépôt sont ajoutés au montant et payés par le votant. Chaque tranche cumulée de 100 FCFA issue de paiements vérifiés `COMPLETED` ou `SUCCESS` rapporte une voix au projet concerné ; les montants restants sont cumulés. Les références, le projet, le montant et la devise doivent correspondre à la commande enregistrée avant le paiement. Les doublons ne créent pas de voix supplémentaires et les remboursements retirent leur montant du score.
 
 ## Mise en service du compteur
 
