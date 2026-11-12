@@ -17,4 +17,4 @@ Ouvrez `index.html` dans un navigateur. Toutes les images sont stockées dans `a
 - `app.js` : données, filtres, recherche, navigation vers les fiches et validation du montant minimum.
 - `assets/` : photos fournies pour M.LAB et les cinq profils suivants.
 
-Les compteurs et classements de votes fictifs ont été retirés. Le formulaire accepte un montant entier à partir de 100 FCFA sans plafond et redirige vers la page de paiement hébergée par SoleasPay. La maquette ne valide ni ne comptabilise automatiquement les votes après paiement ; une vérification serveur et un stockage des transactions seront nécessaires pour cela.
+Les compteurs et classements de votes fictifs ont été retirés. Le formulaire accepte un montant entier à partir de 100 FCFA sans plafond et redirige vers la page de paiement hébergée par SoleasPay ; les frais sont ajoutés au montant et payés par le votant. La maquette ne valide ni ne comptabilise automatiquement les votes après paiement ; une vérification serveur et un stockage des transactions seront nécessaires pour cela.

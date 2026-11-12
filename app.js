@@ -189,7 +189,7 @@ function renderProjectDetailPage() {
           <section class="detail-section"><div class="detail-section-label"><span>04</span><h2>La vision</h2></div><p>${project.future}</p></section>
         </div>
         <aside class="project-detail-sidebar" aria-label="Soutenir le projet">
-          <div class="payment-card" id="soutenir"><span class="payment-icon" aria-hidden="true">＋</span><div class="section-kicker">CONTRIBUTION AU VOTE</div><h2>Soutenir ce projet</h2><p>Choisissez le montant de votre contribution. Le minimum est de 100 FCFA, sans plafond.</p><div class="payment-method-inline"><strong>SoleasPay</strong><span>Mode de paiement</span></div><button class="payment-button" type="button" data-vote-open="${project.id}">Déposer pour voter <span aria-hidden="true">↗</span></button><small class="payment-disabled-note">Paiement traité sur SoleasPay ; vote en attente de vérification.</small></div>
+          <div class="payment-card" id="soutenir"><span class="payment-icon" aria-hidden="true">＋</span><div class="section-kicker">CONTRIBUTION AU VOTE</div><h2>Soutenir ce projet</h2><p>Choisissez le montant de votre contribution. Le minimum est de 100 FCFA, sans plafond.</p><div class="payment-method-inline"><strong>SoleasPay</strong><span>Mode de paiement</span></div><button class="payment-button" type="button" data-vote-open="${project.id}">Déposer pour voter <span aria-hidden="true">↗</span></button><small class="payment-disabled-note">Frais de dépôt payés par le votant ; vote en attente de vérification.</small></div>
           <a class="sidebar-back-link" href="projets.html#votes">← Découvrir les autres projets</a>
         </aside>
       </div>
@@ -231,7 +231,8 @@ function setupVoteModal() {
       shopName: "ÉLANOVA",
       successUrl: SOLEASPAY_SUCCESS_URL,
       failureUrl: SOLEASPAY_FAILURE_URL,
-      area: "CMR"
+      area: "CMR",
+      feeBearer: "CUSTOMER"
     };
     const checkoutForm = document.createElement("form");
     checkoutForm.method = "POST";
