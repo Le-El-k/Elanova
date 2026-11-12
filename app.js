@@ -67,28 +67,6 @@ const projects = [
     solution: "Prototyper des savons et baumes simples, documenter les recettes et les bonnes pratiques d'hygiène, puis tester les produits auprès de premiers clients.",
     goals: "Développer trois produits pilotes, former une petite équipe aux pratiques de fabrication et tester une première vente locale.",
     future: "Faire évoluer la gamme, nouer des partenariats d'approvisionnement responsable et créer des opportunités pour d'autres jeunes entrepreneuses."
-  },
-  {
-    id: "atelier-ndolo", name: "Estelle Ndom", initials: "EN", title: "Atelier Ndolo", category: "Commerce et services",
-    short: "Un atelier de couture circulaire pour réparer, transformer et transmettre.",
-    location: "Limbe, Cameroun", avatar: "assets/atelier-ndolo-avatar.jpg",
-    image: "assets/atelier-ndolo-projet.jpg",
-    long: "Atelier Ndolo donne une seconde vie aux vêtements grâce à la retouche, à la transformation et à des ateliers pratiques. Les créations sont réalisées à partir de textiles récupérés et de tissus de la région.",
-    problem: "Les vêtements peu utilisés s'accumulent, tandis que les services de réparation accessibles et les espaces de transmission manquent.",
-    solution: "Un atelier de quartier où l'on peut faire réparer ses vêtements, apprendre à coudre et découvrir des pièces revalorisées.",
-    goals: "Former 20 jeunes aux bases de la couture et détourner 400 pièces textiles de la décharge.",
-    future: "Créer une collection capsule issue du réemploi et développer des ateliers itinérants."
-  },
-  {
-    id: "solaire-ensemble", name: "Armand Fongang", initials: "AF", title: "Solaire Ensemble", category: "Environnement",
-    short: "Des solutions solaires de proximité pensées avec les habitants.",
-    location: "Ngaoundéré, Cameroun", avatar: "assets/solaire-ensemble-avatar.jpg",
-    image: "assets/solaire-ensemble-projet.jpg",
-    long: "Solaire Ensemble accompagne des petits commerces et des associations pour imaginer des solutions d'énergie solaire adaptées à leurs besoins. Le projet privilégie l'installation locale, l'entretien et le partage des compétences.",
-    problem: "Les solutions d'énergie solaire sont parfois difficiles à choisir, installer et entretenir sans accompagnement de proximité.",
-    solution: "Un diagnostic simple, des équipements adaptés aux usages et une formation à l'entretien avec des techniciens du territoire.",
-    goals: "Réaliser 12 installations pilotes et former un groupe de jeunes techniciens locaux.",
-    future: "Étendre le modèle à des centres communautaires et développer un service local de maintenance."
   }
 ];
 
