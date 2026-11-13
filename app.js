@@ -2,6 +2,7 @@
 const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5biWPwqUAP";
 const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
 const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
+const localVoteStorage = window.ELANOVA_VOTE_STORAGE;
 
 // Profils et projets présentés sur ÉLANOVA.
 const projects = [
@@ -72,6 +73,7 @@ const projects = [
 
 const categories = ["Toutes les catégories", "Technologie et innovation", "Agriculture", "Éducation", "Santé", "Environnement", "Entrepreneuriat", "Commerce et services"];
 const state = { selectedCategory: categories[0], search: "", sort: "az", visibleCount: 6 };
+let latestVoteCounts = null;
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 const formatNumber = (number) => new Intl.NumberFormat("fr-FR").format(number);
@@ -113,6 +115,7 @@ function projectCard(project) {
       <div class="project-card-body">
         <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
+        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
         <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
@@ -125,6 +128,10 @@ function renderProjects() {
   $("#results-label").textContent = `${results.length} projet${results.length > 1 ? "s" : ""} ${state.selectedCategory !== categories[0] ? `dans « ${state.selectedCategory} »` : "à découvrir"}`;
   $("#load-more").parentElement.hidden = results.length <= state.visibleCount;
   $("#project-count").textContent = String(projects.length).padStart(2, "0");
+  if (latestVoteCounts) {
+    renderVoteCounts(latestVoteCounts);
+    renderRanking(latestVoteCounts);
+  }
 }
 
 function renderProjectDetailPage() {
@@ -149,6 +156,7 @@ function renderProjectDetailPage() {
           <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
           <h1 id="project-page-title">${project.title}</h1>
           <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
+          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
           <p class="project-detail-summary">${project.short}</p>
           <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
         </div>
@@ -170,6 +178,58 @@ function renderProjectDetailPage() {
         </aside>
       </div>
     </div>`;
+  if (latestVoteCounts) renderVoteCounts(latestVoteCounts);
+}
+
+function renderVoteCounts(counts) {
+  $$('[data-vote-count]').forEach((element) => {
+    const projectId = element.dataset.voteCount;
+    const count = Number(counts?.[projectId]);
+    const value = $("strong", element);
+    const label = $("span", element);
+    if (!Number.isFinite(count) || count < 0) {
+      value.textContent = "—";
+      label.textContent = "décompte indisponible";
+      return;
+    }
+    value.textContent = formatNumber(count);
+    label.textContent = `voix sur cet appareil`;
+  });
+}
+
+function renderRanking(counts) {
+  const list = $("#ranking-list");
+  if (!list) return;
+  const ranking = projects
+    .map((project) => ({ project, votes: Number(counts?.[project.id]) || 0 }))
+    .sort((a, b) => b.votes - a.votes || a.project.title.localeCompare(b.project.title, "fr"));
+  if (!ranking.some((entry) => entry.votes > 0)) {
+    list.innerHTML = '<li class="ranking-empty">Aucune voix enregistrée dans ce navigateur pour le moment.</li>';
+    return;
+  }
+
+  let rank = 0;
+  let previousVotes = null;
+  list.innerHTML = ranking.map(({ project, votes }, index) => {
+    if (votes !== previousVotes) rank = index + 1;
+    previousVotes = votes;
+    return `<li class="live-ranking-row"><span class="live-ranking-rank">${rank}</span><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span class="live-ranking-name"><a href="${projectPageUrl(project)}">${project.name}</a><small>${project.title}</small></span><strong>${formatNumber(votes)}</strong><span class="live-ranking-unit">voix</span></li>`;
+  }).join("");
+}
+
+function loadVoteCounts() {
+  try {
+    latestVoteCounts = localVoteStorage.getScores(projects.map((project) => project.id));
+    renderVoteCounts(latestVoteCounts);
+    renderRanking(latestVoteCounts);
+  } catch {
+    $$('[data-vote-count]').forEach((element) => {
+      $("strong", element).textContent = "—";
+      $("span", element).textContent = "stockage local indisponible";
+    });
+    const rankingList = $("#ranking-list");
+    if (rankingList) rankingList.innerHTML = '<li class="ranking-empty">Le stockage local de ce navigateur est indisponible.</li>';
+  }
 }
 
 function openVoteModal(id) {
@@ -189,15 +249,31 @@ function setupVoteModal() {
   const dialog = $("#vote-modal");
   const form = $("#vote-form");
   if (!dialog || !form) return;
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const amount = $("#vote-amount", form);
     if (!amount.reportValidity()) return;
     const project = projectById($("#vote-project-id", form).value);
     if (!project) return;
 
+    const submitButton = $(".payment-submit", form);
+    const statusMessage = $("#payment-status", form);
     const orderToken = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     const orderId = `ELANOVA-${project.id}-${orderToken}`;
+    try {
+      localVoteStorage.prepareOrder({ orderId, projectId: project.id, amount: amount.valueAsNumber });
+    } catch (error) {
+      statusMessage.textContent = error.message || "Activez le stockage local de ce navigateur pour conserver le suivi du paiement.";
+      return;
+    }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute("aria-busy", "true");
+    }
+
+    const failureUrl = new URL(SOLEASPAY_FAILURE_URL);
+    failureUrl.searchParams.set("order_id", orderId);
     const checkoutFields = {
       apiKey: SOLEASPAY_API_KEY,
       amount: amount.value,
@@ -206,7 +282,7 @@ function setupVoteModal() {
       description: `Contribution au vote ÉLANOVA — ${project.title}`,
       shopName: "ÉLANOVA",
       successUrl: SOLEASPAY_SUCCESS_URL,
-      failureUrl: SOLEASPAY_FAILURE_URL,
+      failureUrl: failureUrl.toString(),
       area: "CMR",
       feeBearer: "CUSTOMER"
     };
@@ -225,11 +301,6 @@ function setupVoteModal() {
 
     const formattedAmount = formatNumber(amount.valueAsNumber);
     $("#payment-status", form).textContent = `Redirection vers SoleasPay pour payer ${formattedAmount} FCFA…`;
-    const submitButton = $(".payment-submit", form);
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.setAttribute("aria-busy", "true");
-    }
     HTMLFormElement.prototype.submit.call(checkoutForm);
   });
   dialog.addEventListener("click", (event) => {
@@ -300,6 +371,7 @@ function init() {
       setupFilters();
     }
   }
+  loadVoteCounts();
 }
 
 init();
