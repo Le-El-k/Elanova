@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <script src="config.js"></script>
+    <script src="vote-storage.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#payment-result">Aller au résultat du paiement</a>
@@ -29,13 +29,12 @@
         <h1 id="payment-return-title">Vérification du paiement</h1>
         <p id="payment-return-message">Lecture du résultat transmis par SoleasPay…</p>
         <p class="payment-return-reference" id="payment-return-reference" hidden></p>
-        <p class="payment-return-note">Conservez la référence de transaction pour le suivi et la confirmation de votre contribution.</p>
+        <p class="payment-return-note">Les voix affichées sont calculées dans ce navigateur à partir du retour SoleasPay. Elles ne sont pas partagées entre visiteurs.</p>
         <a class="button button-dark" id="payment-return-link" href="projets.html#votes">Retourner aux projets <span aria-hidden="true">↗</span></a>
       </section>
     </main>
     <script>
       const query = new URLSearchParams(window.location.search);
-      const apiUrl = String(window.ELANOVA_API_URL || "").trim().replace(/\/+$/, "");
       let paymentData = null;
       try {
         const rawData = query.get("soleaspay_data");
@@ -50,72 +49,54 @@
       const returnLink = document.getElementById("payment-return-link");
       const transactionReference = paymentData?.transaction_reference || paymentData?.reference;
       const orderId = query.get("order_id") || paymentData?.invoice_reference;
-      const failureStatus = ["FAILED", "CANCELLED", "REFUNDED"].includes(String(paymentData?.status || "").toUpperCase());
+      const status = String(paymentData?.status || "").toUpperCase();
+      const projectIds = ["mlab-best-soap", "agromboa-direct", "savoirs-en-mouvement", "restart-mobile", "agripulse-local", "naya-racines"];
 
       if (transactionReference) {
         reference.hidden = false;
         reference.textContent = `Référence de transaction : ${transactionReference}`;
       }
 
-      const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-
-      async function confirmVote() {
-        if (failureStatus || query.get("retour") === "echec") {
+      function showPaymentResult() {
+        if (["FAILED", "CANCELLED", "REFUNDED"].includes(status) || query.get("retour") === "echec") {
+          if (orderId) {
+            try { window.ELANOVA_VOTE_STORAGE.discardOrder(orderId); } catch { /* Le score reste inchangé si le stockage est indisponible. */ }
+          }
           title.textContent = "Paiement non confirmé";
           message.textContent = "Le paiement n'a pas abouti ou a été annulé. Vous pouvez réessayer depuis la page du projet.";
           return;
         }
-        if (!transactionReference || !orderId) {
-          title.textContent = "Vérification impossible";
-          message.textContent = "La référence de commande ou de transaction manque dans le retour SoleasPay. Aucun vote n'a été ajouté.";
-          return;
-        }
-        if (!apiUrl) {
-          title.textContent = "Paiement reçu, vérification en attente";
-          message.textContent = "Le service de vérification des paiements n'est pas encore connecté. Aucun vote ne sera affiché avant cette vérification.";
+        if (!["SUCCESS", "COMPLETED"].includes(status)) {
+          title.textContent = status ? "Paiement en cours" : "Retour de paiement reçu";
+          message.textContent = status
+            ? `SoleasPay indique ${status}. Aucun score local n'est ajouté avant le retour d'un statut réussi.`
+            : "SoleasPay n'a pas transmis de statut exploitable. Aucun score local n'a été ajouté.";
           return;
         }
 
-        title.textContent = "Vérification du paiement";
-        message.textContent = "Nous vérifions la transaction auprès de SoleasPay…";
-        for (let attempt = 0; attempt < 7; attempt += 1) {
-          try {
-            const response = await fetch(`${apiUrl}/api/votes/confirm`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json", Accept: "application/json" },
-              body: JSON.stringify({ orderId, transactionReference })
-            });
-            const result = await response.json().catch(() => ({}));
-            if (response.status === 202 || result.pending) {
-              title.textContent = "Paiement en cours";
-              message.textContent = "SoleasPay traite encore la transaction. La vérification continue automatiquement.";
-              await wait(5000);
-              continue;
-            }
-            if (!response.ok) throw new Error(result.message || "La vérification n'a pas abouti.");
-            if (result.confirmed) {
-              title.textContent = "Vote confirmé";
-              message.textContent = `Le paiement est confirmé par SoleasPay. Ce projet compte maintenant ${new Intl.NumberFormat("fr-FR").format(result.count)} voix confirmée${result.count === 1 ? "" : "s"}.`;
-              if (result.projectId) {
-                returnLink.href = `projet.html?projet=${encodeURIComponent(result.projectId)}`;
-                returnLink.innerHTML = 'Voir le projet <span aria-hidden="true">↗</span>';
-              }
-              return;
-            }
-            title.textContent = "Paiement non confirmé";
-            message.textContent = "SoleasPay n'indique pas un paiement réussi. Aucun vote n'a été comptabilisé.";
-            return;
-          } catch (error) {
-            title.textContent = "Vérification momentanément indisponible";
-            message.textContent = `${error.message || "Le service de vérification ne répond pas."} Rechargez cette page plus tard pour vérifier le résultat.`;
-            return;
-          }
+        let result;
+        try {
+          result = window.ELANOVA_VOTE_STORAGE.recordPayment(paymentData, projectIds);
+        } catch {
+          title.textContent = "Score local indisponible";
+          message.textContent = "Le navigateur n'a pas pu enregistrer cette contribution dans son stockage local.";
+          return;
         }
-        title.textContent = "Paiement toujours en cours";
-        message.textContent = "SoleasPay n'a pas encore confirmé le paiement. Aucun vote n'est comptabilisé pour le moment. Vous pouvez recharger cette page plus tard.";
+        if (!result.recorded) {
+          title.textContent = "Retour SoleasPay reçu";
+          message.textContent = `SoleasPay indique ${status}, mais le suivi local n'a pas pu rattacher cette transaction à une commande de ce navigateur. ${result.reason || "Aucune voix locale n'a été ajoutée."}`;
+          return;
+        }
+
+        title.textContent = result.duplicate ? "Transaction déjà enregistrée ici" : "Retour SoleasPay reçu";
+        message.textContent = `SoleasPay indique ${status} pour ${new Intl.NumberFormat("fr-FR").format(result.amount)} FCFA. Le suivi de ce navigateur affiche maintenant ${new Intl.NumberFormat("fr-FR").format(result.votes)} voix pour ce projet.`;
+        if (result.projectId) {
+          returnLink.href = `projet.html?projet=${encodeURIComponent(result.projectId)}`;
+          returnLink.innerHTML = 'Voir le projet <span aria-hidden="true">↗</span>';
+        }
       }
 
-      confirmVote();
+      showPaymentResult();
     </script>
   </body>
 </html>

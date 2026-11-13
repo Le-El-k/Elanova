@@ -2,7 +2,7 @@
 const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5biWPwqUAP";
 const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
 const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
-const ELANOVA_API_URL = String(window.ELANOVA_API_URL || "").trim().replace(/\/+$/, "");
+const localVoteStorage = window.ELANOVA_VOTE_STORAGE;
 
 // Profils et projets présentés sur ÉLANOVA.
 const projects = [
@@ -115,7 +115,7 @@ function projectCard(project) {
       <div class="project-card-body">
         <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
-        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix confirmées</span></div>
+        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
         <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
@@ -156,7 +156,7 @@ function renderProjectDetailPage() {
           <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
           <h1 id="project-page-title">${project.title}</h1>
           <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
-          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix confirmées</span></div>
+          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
           <p class="project-detail-summary">${project.short}</p>
           <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
         </div>
@@ -193,7 +193,7 @@ function renderVoteCounts(counts) {
       return;
     }
     value.textContent = formatNumber(count);
-    label.textContent = `voix confirmée${count === 1 ? "" : "s"}`;
+    label.textContent = `voix sur cet appareil`;
   });
 }
 
@@ -204,7 +204,7 @@ function renderRanking(counts) {
     .map((project) => ({ project, votes: Number(counts?.[project.id]) || 0 }))
     .sort((a, b) => b.votes - a.votes || a.project.title.localeCompare(b.project.title, "fr"));
   if (!ranking.some((entry) => entry.votes > 0)) {
-    list.innerHTML = '<li class="ranking-empty">Le classement apparaîtra après les premières voix confirmées.</li>';
+    list.innerHTML = '<li class="ranking-empty">Aucune voix enregistrée dans ce navigateur pour le moment.</li>';
     return;
   }
 
@@ -217,22 +217,18 @@ function renderRanking(counts) {
   }).join("");
 }
 
-async function loadVoteCounts() {
-  if (!ELANOVA_API_URL) return;
+function loadVoteCounts() {
   try {
-    const response = await fetch(`${ELANOVA_API_URL}/api/votes/counts`, { headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error("Le compteur de votes est indisponible.");
-    const payload = await response.json();
-    latestVoteCounts = payload.counts || {};
+    latestVoteCounts = localVoteStorage.getScores(projects.map((project) => project.id));
     renderVoteCounts(latestVoteCounts);
     renderRanking(latestVoteCounts);
   } catch {
     $$('[data-vote-count]').forEach((element) => {
       $("strong", element).textContent = "—";
-      $("span", element).textContent = "décompte indisponible";
+      $("span", element).textContent = "stockage local indisponible";
     });
     const rankingList = $("#ranking-list");
-    if (rankingList) rankingList.innerHTML = '<li class="ranking-empty">Le classement n’est pas disponible pour le moment.</li>';
+    if (rankingList) rankingList.innerHTML = '<li class="ranking-empty">Le stockage local de ce navigateur est indisponible.</li>';
   }
 }
 
@@ -262,8 +258,12 @@ function setupVoteModal() {
 
     const submitButton = $(".payment-submit", form);
     const statusMessage = $("#payment-status", form);
-    if (!ELANOVA_API_URL) {
-      statusMessage.textContent = "Le service de vérification des paiements n'est pas encore connecté. Le vote ne peut pas être lancé.";
+    const orderToken = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const orderId = `ELANOVA-${project.id}-${orderToken}`;
+    try {
+      localVoteStorage.prepareOrder({ orderId, projectId: project.id, amount: amount.valueAsNumber });
+    } catch (error) {
+      statusMessage.textContent = error.message || "Activez le stockage local de ce navigateur pour conserver le suivi du paiement.";
       return;
     }
 
@@ -271,29 +271,9 @@ function setupVoteModal() {
       submitButton.disabled = true;
       submitButton.setAttribute("aria-busy", "true");
     }
-    statusMessage.textContent = "Préparation du paiement sécurisé…";
 
-    let orderId;
-    try {
-      const orderResponse = await fetch(`${ELANOVA_API_URL}/api/votes/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ projectId: project.id, amount: amount.valueAsNumber })
-      });
-      const orderPayload = await orderResponse.json().catch(() => ({}));
-      if (!orderResponse.ok || !orderPayload.orderId) {
-        throw new Error(orderPayload.message || "Impossible de préparer le paiement. Réessayez dans quelques instants.");
-      }
-      orderId = orderPayload.orderId;
-    } catch (error) {
-      statusMessage.textContent = error.message || "Le service de paiement est momentanément indisponible.";
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.removeAttribute("aria-busy");
-      }
-      return;
-    }
-
+    const failureUrl = new URL(SOLEASPAY_FAILURE_URL);
+    failureUrl.searchParams.set("order_id", orderId);
     const checkoutFields = {
       apiKey: SOLEASPAY_API_KEY,
       amount: amount.value,
@@ -302,7 +282,7 @@ function setupVoteModal() {
       description: `Contribution au vote ÉLANOVA — ${project.title}`,
       shopName: "ÉLANOVA",
       successUrl: SOLEASPAY_SUCCESS_URL,
-      failureUrl: SOLEASPAY_FAILURE_URL,
+      failureUrl: failureUrl.toString(),
       area: "CMR",
       feeBearer: "CUSTOMER"
     };
@@ -392,11 +372,6 @@ function init() {
     }
   }
   loadVoteCounts();
-  if (ELANOVA_API_URL) {
-    window.setInterval(() => {
-      if (!document.hidden) loadVoteCounts();
-    }, 30_000);
-  }
 }
 
 init();

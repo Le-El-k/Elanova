@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <script src="config.js"></script>
+    <script src="vote-storage.js"></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -37,7 +37,7 @@
         <div class="voting-topline"><div class="campaign-status"><span class="live-dot"></span> PROJETS À SOUTENIR</div></div>
         <div class="voting-heading"><div><div class="section-kicker">DÉCOUVREZ LES PORTEURS</div><h1 class="section-title" id="votes-title">Des idées concrètes.<br><em>Des parcours à soutenir.</em></h1><p class="voting-intro">Explorez les projets, découvrez leurs ambitions et choisissez ceux que vous souhaitez soutenir.</p></div><div class="campaign-stats"><div><strong id="project-count">06</strong><span>projets participants</span></div></div></div>
         <div class="catalog-notice"><span aria-hidden="true">ⓘ</span> Montant minimum 100 FCFA. Les frais de dépôt SoleasPay sont à la charge du votant.</div>
-        <section class="live-ranking" aria-labelledby="live-ranking-title"><div class="live-ranking-heading"><div class="section-kicker">SOUTIEN CONFIRMÉ</div><h2 id="live-ranking-title">Classement des projets</h2><p>Chaque tranche cumulée de 100 FCFA versée rapporte une voix. Seuls les paiements confirmés comptent.</p></div><ol class="live-ranking-list" id="ranking-list" aria-live="polite"><li class="ranking-empty">Le classement sera disponible après activation du compteur et confirmation des premiers paiements.</li></ol></section>
+        <section class="live-ranking" aria-labelledby="live-ranking-title"><div class="live-ranking-heading"><div class="section-kicker">SCORE LOCAL</div><h2 id="live-ranking-title">Classement sur cet appareil</h2><p>Chaque tranche cumulée de 100 FCFA dont le retour SoleasPay indique un paiement réussi donne une voix. Ce classement reste dans ce navigateur.</p></div><ol class="live-ranking-list" id="ranking-list" aria-live="polite"><li class="ranking-empty">Aucune voix enregistrée dans ce navigateur pour le moment.</li></ol></section>
         <div class="catalog-controls">
           <div class="filter-row" id="category-filters" aria-label="Filtrer par catégorie"></div>
           <div class="search-sort-row"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.3 4.3"></path></svg><input id="project-search" type="search" placeholder="Rechercher un projet ou un candidat" aria-label="Rechercher un projet ou un candidat"></label><label class="sort-select"><span>Trier par</span><select id="project-sort" aria-label="Trier les projets"><option value="az">Nom du projet (A–Z)</option><option value="za">Nom du projet (Z–A)</option><option value="category">Catégorie</option></select></label></div>
