@@ -32,3 +32,5 @@ Créez les identifiants de l’application serveur en suivant le [démarrage rap
 Après le déploiement, renseignez l’URL HTTPS de l’API dans `config.js` (`window.ELANOVA_API_URL`) et republiez le site GitHub Pages. Tant que cette URL ou les identifiants serveur ne sont pas configurés, les compteurs restent indisponibles et le paiement est bloqué pour éviter un vote non vérifiable.
 
 Pour lancer l’API en local, utilisez Node.js 20 ou plus récent, installez les dépendances depuis `api/`, renseignez les variables de `.env.example` dans l’environnement, puis lancez `npm start`.
+
+Le fichier `render.yaml` décrit le service toujours actif et sa base PostgreSQL raccordée par l’URL interne de Render, en région Frankfurt. Le tarif public consulté est d’environ 7 $/mois pour l’API, 6 $/mois pour le plan PostgreSQL et 0,30 $/Go/mois pour le stockage initial de 1 Go. Le compte Render doit être réauthentifié avant la création des ressources.
