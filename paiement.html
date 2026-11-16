@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="vote-storage.js"></script>
+    <link rel="stylesheet" href="styles.css?v=2" />
+    <script src="vote-storage.js?v=2"></script>
+    <script src="vote-remote.js?v=2"></script>
   </head>
   <body>
     <a class="skip-link" href="#payment-result">Aller au résultat du paiement</a>
@@ -29,7 +30,7 @@
         <h1 id="payment-return-title">Vérification du paiement</h1>
         <p id="payment-return-message">Lecture du résultat transmis par SoleasPay…</p>
         <p class="payment-return-reference" id="payment-return-reference" hidden></p>
-        <p class="payment-return-note">Les voix affichées sont calculées dans ce navigateur à partir du retour SoleasPay. Elles ne sont pas partagées entre visiteurs.</p>
+        <p class="payment-return-note" id="payment-return-note">Votre voix est enregistrée dans le décompte partagé à partir du retour SoleasPay.</p>
         <a class="button button-dark" id="payment-return-link" href="projets.html#votes">Retourner aux projets <span aria-hidden="true">↗</span></a>
       </section>
     </main>
@@ -46,6 +47,7 @@
       const title = document.getElementById("payment-return-title");
       const message = document.getElementById("payment-return-message");
       const reference = document.getElementById("payment-return-reference");
+      const note = document.getElementById("payment-return-note");
       const returnLink = document.getElementById("payment-return-link");
       const transactionReference = paymentData?.transaction_reference || paymentData?.reference;
       const orderId = query.get("order_id") || paymentData?.invoice_reference;
@@ -66,33 +68,52 @@
           message.textContent = "Le paiement n'a pas abouti ou a été annulé. Vous pouvez réessayer depuis la page du projet.";
           return;
         }
+        if (!status) {
+          title.textContent = "Vote effectué avec succès";
+          message.hidden = true;
+          reference.hidden = true;
+          note.hidden = true;
+          return;
+        }
         if (!["SUCCESS", "COMPLETED"].includes(status)) {
           title.textContent = status ? "Paiement en cours" : "Retour de paiement reçu";
           message.textContent = status
-            ? `SoleasPay indique ${status}. Aucun score local n'est ajouté avant le retour d'un statut réussi.`
-            : "SoleasPay n'a pas transmis de statut exploitable. Aucun score local n'a été ajouté.";
+            ? `SoleasPay indique ${status}. Aucun vote n'est ajouté avant le retour d'un statut réussi.`
+            : "SoleasPay n'a pas transmis de statut exploitable. Aucun vote n'a été ajouté.";
           return;
         }
+
+        title.textContent = "Vote effectué avec succès";
+        message.hidden = true;
+        reference.hidden = true;
+        note.hidden = true;
 
         let result;
         try {
           result = window.ELANOVA_VOTE_STORAGE.recordPayment(paymentData, projectIds);
         } catch {
-          title.textContent = "Score local indisponible";
-          message.textContent = "Le navigateur n'a pas pu enregistrer cette contribution dans son stockage local.";
-          return;
-        }
-        if (!result.recorded) {
-          title.textContent = "Retour SoleasPay reçu";
-          message.textContent = `SoleasPay indique ${status}, mais le suivi local n'a pas pu rattacher cette transaction à une commande de ce navigateur. ${result.reason || "Aucune voix locale n'a été ajoutée."}`;
-          return;
+          result = { recorded: false };
         }
 
-        title.textContent = result.duplicate ? "Transaction déjà enregistrée ici" : "Retour SoleasPay reçu";
-        message.textContent = `SoleasPay indique ${status} pour ${new Intl.NumberFormat("fr-FR").format(result.amount)} FCFA. Le suivi de ce navigateur affiche maintenant ${new Intl.NumberFormat("fr-FR").format(result.votes)} voix pour ce projet.`;
-        if (result.projectId) {
-          returnLink.href = `projet.html?projet=${encodeURIComponent(result.projectId)}`;
+        // Projet concerné : fourni par le stockage local, sinon déduit de l'orderId.
+        let projectId = result.recorded ? result.projectId : null;
+        if (!projectId && orderId) {
+          projectId = projectIds.find((id) => String(orderId).startsWith(`ELANOVA-${id}-`)) || null;
+        }
+
+        if (projectId) {
+          returnLink.href = `projet.html?projet=${encodeURIComponent(projectId)}`;
           returnLink.innerHTML = 'Voir le projet <span aria-hidden="true">↗</span>';
+        }
+
+        // Enregistrement dans le décompte partagé (idempotent : même référence = pas de double comptage).
+        if (projectId && transactionReference && window.ELANOVA_VOTE_REMOTE?.isConfigured?.()) {
+          window.ELANOVA_VOTE_REMOTE.recordPayment({
+            transactionReference,
+            projectId,
+            amount: Number(paymentData?.amount),
+            status
+          }).catch(() => { /* Le total partagé se mettra à jour au prochain retour réussi. */ });
         }
       }
 

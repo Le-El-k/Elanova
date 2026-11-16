@@ -1,8 +1,12 @@
 // SoleasPay Checkout v4. Cette clé est destinée au flux Checkout public du marchand.
 const SOLEASPAY_API_KEY = "SP6aa88e16dcbc5rEQzhge7Fuyb3n9cMA7lMvOMY9C_rUvPYTA5biWPwqUAP";
-const SOLEASPAY_SUCCESS_URL = "https://le-el-k.github.io/Elanova/paiement.html";
-const SOLEASPAY_FAILURE_URL = "https://le-el-k.github.io/Elanova/paiement.html?retour=echec";
+const SOLEASPAY_SUCCESS_URL = "https://elanova.onrender.com/paiement.html";
+const SOLEASPAY_FAILURE_URL = "https://elanova.onrender.com/paiement.html?retour=echec";
 const localVoteStorage = window.ELANOVA_VOTE_STORAGE;
+const remoteVoteStorage = window.ELANOVA_VOTE_REMOTE;
+// Vrai quand les voix affichées proviennent du total partagé (distant),
+// faux quand on retombe sur le comptage local propre à cet appareil.
+let votesAreShared = false;
 
 // Profils et projets présentés sur ÉLANOVA.
 const projects = [
@@ -115,7 +119,7 @@ function projectCard(project) {
       <div class="project-card-body">
         <div class="candidate-line"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}" loading="lazy"><span>${project.name} <span aria-hidden="true">·</span> ${project.location}</span></div>
         <h3>${project.title}</h3><p>${project.short}</p>
-        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
+        <div class="project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix</span></div>
         <div class="project-card-actions"><a class="detail-link" href="${projectPageUrl(project)}">Découvrir le projet <span aria-hidden="true">↗</span></a><button class="vote-button" type="button" data-vote-open="${project.id}">♡ Voter pour ce projet</button></div>
       </div>
     </article>`;
@@ -156,7 +160,7 @@ function renderProjectDetailPage() {
           <span class="category-pill"><span aria-hidden="true">${iconForCategory(project.category)}</span>${project.category}</span>
           <h1 id="project-page-title">${project.title}</h1>
           <div class="project-detail-person"><img src="${project.avatar}" alt="" style="object-position:${project.avatarPosition || "center"}"><span><strong>${project.name}</strong><small>Porteur du projet</small></span></div>
-          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix sur cet appareil</span></div>
+          <div class="project-detail-votes project-vote-count" data-vote-count="${project.id}" aria-live="polite"><strong>—</strong><span>voix</span></div>
           <p class="project-detail-summary">${project.short}</p>
           <div class="project-detail-actions"><button class="button button-coral vote-button" type="button" data-vote-open="${project.id}">♡ Déposer pour voter</button><span>Minimum 100 FCFA · SoleasPay</span></div>
         </div>
@@ -193,7 +197,7 @@ function renderVoteCounts(counts) {
       return;
     }
     value.textContent = formatNumber(count);
-    label.textContent = `voix sur cet appareil`;
+    label.textContent = votesAreShared ? `voix` : `voix sur cet appareil`;
   });
 }
 
@@ -204,7 +208,9 @@ function renderRanking(counts) {
     .map((project) => ({ project, votes: Number(counts?.[project.id]) || 0 }))
     .sort((a, b) => b.votes - a.votes || a.project.title.localeCompare(b.project.title, "fr"));
   if (!ranking.some((entry) => entry.votes > 0)) {
-    list.innerHTML = '<li class="ranking-empty">Aucune voix enregistrée dans ce navigateur pour le moment.</li>';
+    list.innerHTML = votesAreShared
+      ? '<li class="ranking-empty">Aucune voix enregistrée pour le moment. Soyez le premier à soutenir un projet.</li>'
+      : '<li class="ranking-empty">Aucune voix enregistrée dans ce navigateur pour le moment.</li>';
     return;
   }
 
@@ -217,8 +223,9 @@ function renderRanking(counts) {
   }).join("");
 }
 
-function loadVoteCounts() {
+function renderLocalVoteCounts() {
   try {
+    votesAreShared = false;
     latestVoteCounts = localVoteStorage.getScores(projects.map((project) => project.id));
     renderVoteCounts(latestVoteCounts);
     renderRanking(latestVoteCounts);
@@ -232,6 +239,61 @@ function loadVoteCounts() {
   }
 }
 
+async function loadVoteCounts() {
+  // Total partagé (distant) en priorité ; repli local si non configuré ou injoignable.
+  if (remoteVoteStorage?.isConfigured?.()) {
+    try {
+      const counts = await remoteVoteStorage.getScores(projects.map((project) => project.id));
+      if (counts) {
+        votesAreShared = true;
+        latestVoteCounts = counts;
+        renderVoteCounts(counts);
+        renderRanking(counts);
+        return;
+      }
+    } catch {
+      // Service distant injoignable : on affiche le comptage local en secours.
+    }
+  }
+  renderLocalVoteCounts();
+}
+
+// Fallback d'ouverture pour les navigateurs sans <dialog>/showModal
+// (iPhone < iOS 15.4, vieux Android, Opera Mini…). On affiche la modale
+// en superposition manuelle avec un fond sombre cliquable.
+function removeVoteOverlay() {
+  const overlay = document.querySelector(".vote-modal-overlay");
+  if (overlay) overlay.remove();
+  document.body.style.overflow = "";
+}
+
+function openDialog(dialog) {
+  if (typeof dialog.showModal === "function") {
+    if (!dialog.open) dialog.showModal();
+    return;
+  }
+  dialog.setAttribute("open", "");
+  dialog.classList.add("is-open");
+  if (!document.querySelector(".vote-modal-overlay")) {
+    const overlay = document.createElement("div");
+    overlay.className = "vote-modal-overlay";
+    overlay.addEventListener("click", () => closeDialog(dialog));
+    document.body.appendChild(overlay);
+  }
+  document.body.style.overflow = "hidden";
+}
+
+function closeDialog(dialog) {
+  if (!dialog) return;
+  if (typeof dialog.close === "function" && dialog.open) {
+    dialog.close();
+  } else {
+    dialog.removeAttribute("open");
+    dialog.classList.remove("is-open");
+  }
+  removeVoteOverlay();
+}
+
 function openVoteModal(id) {
   const project = projectById(id);
   const dialog = $("#vote-modal");
@@ -241,7 +303,7 @@ function openVoteModal(id) {
   $("#vote-project-id", dialog).value = project.id;
   $("#vote-amount", dialog).value = "";
   $("#payment-status", dialog).textContent = "";
-  if (!dialog.open) dialog.showModal();
+  openDialog(dialog);
   $("#vote-amount", dialog).focus();
 }
 
@@ -304,7 +366,10 @@ function setupVoteModal() {
     HTMLFormElement.prototype.submit.call(checkoutForm);
   });
   dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
+    if (event.target === dialog) closeDialog(dialog);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && dialog.classList.contains("is-open")) closeDialog(dialog);
   });
 }
 
@@ -331,7 +396,7 @@ function setupNavigation() {
       openVoteModal(voteButton.dataset.voteOpen);
       return;
     }
-    if (event.target.closest("[data-modal-close]")) $("#vote-modal")?.close();
+    if (event.target.closest("[data-modal-close]")) closeDialog($("#vote-modal"));
   });
 }
 

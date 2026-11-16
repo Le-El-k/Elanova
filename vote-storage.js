@@ -27,7 +27,7 @@
     const store = readStore();
     const totals = Object.fromEntries(projectIds.map((projectId) => [projectId, 0]));
     Object.values(store.transactions).forEach((transaction) => {
-      if (!transaction || !Object.hasOwn(totals, transaction.projectId)) return;
+      if (!transaction || !Object.prototype.hasOwnProperty.call(totals, transaction.projectId)) return;
       const amount = Number(transaction.amount);
       if (Number.isSafeInteger(amount) && amount >= 100) totals[transaction.projectId] += amount;
     });
